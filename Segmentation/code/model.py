@@ -44,9 +44,6 @@ class UpConv(N.Module):
 
     def __init__(self, in_channels, out_channels):
         super().__init__()
-        self.inc = in_channels
-        self.outc = out_channels
-
         self.up_conv = N.Upsample(scale_factor=2)
 
         self.conv_in = N.Conv3d(in_channels=in_channels,
