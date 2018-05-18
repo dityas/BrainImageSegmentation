@@ -103,7 +103,9 @@ class UNet(N.Module):
     def forward(self, x):
         x1 = self.down1(x)
         x2 = self.down2(x1)
+        print(f"After 2 down convs {x2.size()}")
         x3 = self.down3(x2)
+        print(f"After 3 down convs {x3.size()}")
         x4 = self.down4(x3)
         print(f"After all down convs {x4.size()}")
 
