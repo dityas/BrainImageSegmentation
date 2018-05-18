@@ -83,22 +83,22 @@ class UNet(N.Module):
 
     def __init__(self):
         super().__init__()
-        self.down1 = DownConv(4, 64)
-        self.down2 = DownConv(64, 128)
-        self.down3 = DownConv(128, 256)
-        self.down4 = DownConv(256, 512)
+        self.down1 = DownConv(4, 8)
+        self.down2 = DownConv(8, 16)
+        self.down3 = DownConv(16, 32)
+        self.down4 = DownConv(32, 64)
 
-        self.middle1 = N.Conv3d(in_channels=512,
-                                out_channels=1024,
+        self.middle1 = N.Conv3d(in_channels=64,
+                                out_channels=128,
                                 kernel_size=3,
                                 stride=1)
 
-        self.middle2 = N.Conv3d(in_channels=1024,
-                                out_channels=1024,
+        self.middle2 = N.Conv3d(in_channels=128,
+                                out_channels=128,
                                 kernel_size=3,
                                 stride=1)
 
-        self.upconv4 = UpConv(1024, 512)
+        self.upconv4 = UpConv(128, 64)
 
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
         self.logger.debug("U-Net initialised")
