@@ -16,13 +16,13 @@ class DownConv(N.Module):
         self.conv_in = N.Conv3d(in_channels=in_channels,
                                 out_channels=out_channels,
                                 kernel_size=3,
-                                padding=0,
+                                padding=1,
                                 stride=1)
 
         self.conv_out = N.Conv3d(in_channels=out_channels,
                                  out_channels=out_channels,
                                  kernel_size=3,
-                                 padding=0,
+                                 padding=1,
                                  stride=1)
 
         self.relu = N.ReLU()
