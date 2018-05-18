@@ -109,7 +109,7 @@ class UNet(N.Module):
         xm = self.middle1(x4)
         xm = self.middle2(xm)
 
-        xup4 = self.upconv4(xm, x4)
+        xup4 = self.upconv4(xm, x3)
         #xup3 = self.upconv3(xup4, x3)
         #xup2 = self.upconv2(x, x2)
         #xup1 = self.upconv1(xm, x1)
