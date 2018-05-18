@@ -26,7 +26,6 @@ class Trainer:
                 t_in, t_out = torch.from_numpy(_in), torch.from_numpy(_out)
 
                 prediction = self.model(A.Variable(t_in))
-                print(prediction)
+                print(prediction.size())
 
                 break
-            break
