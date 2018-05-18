@@ -84,17 +84,17 @@ class UNet(N.Module):
     def __init__(self):
         super().__init__()
         self.down1 = DownConv(4, 64)
-        self.down2 = DownConv(self.down1.outc, self.down1.outc * 2)
-        self.down3 = DownConv(self.down2.outc, self.down2.outc * 2)
-        self.down4 = DownConv(self.down3.outc, self.down3.outc * 2)
+        self.down2 = DownConv(64, 128)
+        self.down3 = DownConv(128, 256)
+        self.down4 = DownConv(256, 512)
 
-        self.middle1 = N.Conv3d(in_channels=self.down4.outc,
-                                out_channels=self.down4.outc * 2,
+        self.middle1 = N.Conv3d(in_channels=512,
+                                out_channels=1024,
                                 kernel_size=3,
                                 stride=1)
 
-        self.middle2 = N.Conv3d(in_channels=self.down4.outc * 2,
-                                out_channels=self.down4.outc * 2,
+        self.middle2 = N.Conv3d(in_channels=1024,
+                                out_channels=1024,
                                 kernel_size=3,
                                 stride=1)
 
