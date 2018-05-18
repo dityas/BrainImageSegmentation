@@ -88,11 +88,13 @@ class UNet(N.Module):
         self.middle1 = N.Conv3d(in_channels=64,
                                 out_channels=128,
                                 kernel_size=3,
+                                padding=1,
                                 stride=1)
 
         self.middle2 = N.Conv3d(in_channels=128,
                                 out_channels=128,
                                 kernel_size=3,
+                                padding=1,
                                 stride=1)
 
         self.upconv4 = UpConv(128, 64)
