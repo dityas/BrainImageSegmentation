@@ -105,13 +105,16 @@ class UNet(N.Module):
         x2 = self.down2(x1)
         x3 = self.down3(x2)
         x4 = self.down4(x3)
+        print(f"After all down convs {x4.size()}")
 
         xm = self.middle1(x4)
+        print(f"After first middle {xm.size()}")
         xm = self.middle2(xm)
+        print(f"After second middle {xm.size()}")
 
-        xup4 = self.upconv4(xm, x3)
+        #xup4 = self.upconv4(xm, x3)
         #xup3 = self.upconv3(xup4, x3)
         #xup2 = self.upconv2(x, x2)
         #xup1 = self.upconv1(xm, x1)
 
-        return xup4
+        return xm
