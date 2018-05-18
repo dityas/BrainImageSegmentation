@@ -64,7 +64,6 @@ class UpConv(N.Module):
     def forward(self, x, prev):
         x = self.up_conv(x)
         print(f"X size is {x.size()}")
-        print(prev.size())
         print(f"prev size is {prev.size()}")
         # x = self.conv_in(x)
         # x = self.conv_out(x)
