@@ -52,3 +52,5 @@ class Trainer:
 
                 loss.backward()
                 self.optimizer.step()
+
+                break
