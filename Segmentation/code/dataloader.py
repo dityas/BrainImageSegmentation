@@ -77,8 +77,7 @@ class fMRIDataset(Dataset):
         _input = numpy.transpose(_input, axes=[3, 2, 0, 1])
         label = numpy.transpose(label, axes=[2, 0, 1])
 
-        return (_input[numpy.newaxis, :, :, :, :],
-                label[numpy.newaxis, :, :, :])
+        return (_input, label)
 
     def __getitem__(self, idx):
         image_folder = self.files[idx]
