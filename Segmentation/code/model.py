@@ -96,7 +96,7 @@ class UpConv(N.Module):
                    depth_pad1, depth_pad2)
 
         prev = F.pad(input=prev, pad=padding, mode="constant", value=0)
-        x = x[:, :int(x_channels - prev), :, :, :]
+        x = x[:, :int(x_channels - prev_channels), :, :, :]
         return torch.cat((x, prev), dim=1)
 
     def forward(self, x, prev):
