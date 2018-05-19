@@ -10,6 +10,7 @@ import logging
 class Trainer:
 
     def __init__(self, dataset, model):
+        self.device = "cuda:0"
         self.dataset = DataLoader(dataset,
                                   shuffle=True,
                                   batch_size=1,
@@ -17,7 +18,6 @@ class Trainer:
         self.model = model
         self.model.to(self.device)
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
-        self.device = "cuda:0"
         self.loss = N.BCELoss()
         self.optimizer = O.Adagrad(params=self.model.parameters())
 
