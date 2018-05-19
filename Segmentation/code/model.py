@@ -32,6 +32,7 @@ class DownConv(N.Module):
 
     def forward(self, x):
         x = self.conv_in(x)
+        x = self.relu(x)
         x = self.conv_out(x)
         x = self.relu(x)
         x = self.max_pool(x)
@@ -100,8 +101,10 @@ class UpConv(N.Module):
     def forward(self, x, prev):
         x = self.up_conv(x)
         x = self.pad_and_concat(x, prev)
-        # x = self.conv_in(x)
-        # x = self.conv_out(x)
+        x = self.conv_in(x)
+        x = self.relu(x)
+        x = self.conv_out(x)
+        x = self.relu(x)
         # x = self.relu(x)
         # x = self.max_pool(x)
         return x
