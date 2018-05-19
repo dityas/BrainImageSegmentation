@@ -47,10 +47,10 @@ class Trainer:
                 # Report loss and backprop.
                 print(_out.max())
                 print(_out.min())
-                loss = self.loss(prediction.view(-1), _out.view(-1))
-                self.logger.info(f"Epoch: {i} Batch: {j} Loss: {loss.data[0]}")
+                #loss = self.loss(prediction.view(-1), _out.view(-1))
+                #self.logger.info(f"Epoch: {i} Batch: {j} Loss: {loss.data[0]}")
 
-                loss.backward()
-                self.optimizer.step()
+                #loss.backward()
+                #self.optimizer.step()
 
                 break
