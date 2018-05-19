@@ -145,6 +145,7 @@ class UNet(N.Module):
 
     def forward(self, x):
         x1 = self.down1(x)
+        print(f"After 1 down convs {x1.size()}")
         x2 = self.down2(x1)
         print(f"After 2 down convs {x2.size()}")
         x3 = self.down3(x2)
@@ -160,8 +161,10 @@ class UNet(N.Module):
         xup4 = self.upconv4(xm, x4)
         print(f"After first upconv {xup4.size()}")
         xup3 = self.upconv3(xup4, x3)
-        print(f"After first upconv {xup3.size()}")
-        #xup2 = self.upconv2(x, x2)
-        #xup1 = self.upconv1(xm, x1)
+        print(f"After second upconv {xup3.size()}")
+        xup2 = self.upconv2(xup3, x2)
+        print(f"After third upconv {xup2.size()}")
+        xup1 = self.upconv1(xup2, x1)
+        print(f"After 4 upconvs {xup2.size()}")
 
         return xup4
