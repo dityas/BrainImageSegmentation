@@ -14,7 +14,7 @@ class Trainer:
         self.dataset = DataLoader(dataset,
                                   shuffle=True,
                                   batch_size=1,
-                                  num_workers=2)
+                                  num_workers=1)
         self.model = model
         self.model.to(self.device)
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
@@ -38,8 +38,8 @@ class Trainer:
                 _out = F.pad(_out, (0, 0, 0, 0, 0, 5), value=0)
 
                 # Move tensors to GPU
-                _in = _in.to(self.device).float32()
-                _out = _out.to(self.device).float32()
+                _in = _in.to(self.device).float()
+                _out = _out.to(self.device).float()
 
                 # Run prediction loop
                 prediction = self.model(_in)
