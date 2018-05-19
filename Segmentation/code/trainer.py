@@ -25,8 +25,8 @@ class Trainer:
 
         # Training loop
         for i in range(epochs):
-            for sample in range(len(self.dataset)):
-                _sample = self.dataset[sample]
+            for i, sample in enumerate(self.dataset):
+                _sample = sample
 
                 _in, _out = _sample
                 print(_in.shape)
