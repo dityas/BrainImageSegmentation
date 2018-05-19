@@ -158,13 +158,13 @@ class UNet(N.Module):
         xm = self.middle2(xm)
         print(f"After second middle {xm.size()}")
 
-        xup4 = self.upconv4(xm, x4)
-        print(f"After first upconv {xup4.size()}")
-        xup3 = self.upconv3(xup4, x3)
-        print(f"After second upconv {xup3.size()}")
-        xup2 = self.upconv2(xup3, x2)
-        print(f"After third upconv {xup2.size()}")
-        xup1 = self.upconv1(xup2, x1)
-        print(f"After 4 upconvs {xup2.size()}")
+        x = self.upconv4(xm, x4)
+        print(f"After first upconv {x.size()}")
+        x = self.upconv3(x, x3)
+        print(f"After second upconv {x.size()}")
+        x = self.upconv2(x, x2)
+        print(f"After third upconv {x.size()}")
+        x = self.upconv1(x, x1)
+        print(f"After 4 upconvs {x.size()}")
 
-        return xup4
+        return x
