@@ -1,37 +1,7 @@
-from pathlib import Path
 import numpy
 import nibabel
-import matplotlib.pyplot as plotter
 from torch.utils.data import Dataset
 import logging
-
-
-def get_data_files(root, name_filter):
-
-    files = []
-    root = Path(root)
-
-    def visitor(node, name_filter, file_list):
-
-        for file in node.iterdir():
-            if name_filter in str(file) and file.is_file():
-                file_list.append(str(file))
-            elif file.is_dir():
-                visitor(file, name_filter, file_list)
-
-    visitor(root, name_filter, files)
-
-    return files
-
-
-def temp_loader(files):
-
-    for file in sorted(files[-7:]):
-        img = numpy.array(nibabel.load(file).get_data())
-        print(img.shape)
-        print(file)
-        plotter.imshow(img[:, :, 50])
-        plotter.show()
 
 
 class fMRIDataset(Dataset):
@@ -85,7 +55,7 @@ class fMRIDataset(Dataset):
         label3 = 1.0 * (label == 3.0)
         label4 = 1.0 * (label == 4.0)
         label = numpy.stack([label1, label2, label3, label4], axis=0)
-        
+
         return (_input, label)
 
     def __getitem__(self, idx):

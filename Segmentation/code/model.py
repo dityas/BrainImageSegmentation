@@ -7,7 +7,8 @@ import logging
 class DownConv(N.Module):
 
     """
-        Input(Batch, Channel, Depth, Height, Width) => Conv() => Relu * 2 => MaxPool
+        Input(Batch, Channel, Depth, Height, Width) => (Conv() => Relu) * 2 =>
+        MaxPool
     """
 
     def __init__(self, in_channels, out_channels):
@@ -42,7 +43,8 @@ class DownConv(N.Module):
 class UpConv(N.Module):
 
     """
-        Input(Batch, Channel, Depth, Height, Width) => Conv() => Relu * 2 => MaxPool
+        Previous \\
+        Current =====> input => (Conv3d => ReLU) * 2
     """
 
     def __init__(self, in_channels, out_channels):
@@ -65,6 +67,10 @@ class UpConv(N.Module):
         self.max_pool = N.MaxPool3d(kernel_size=2)
 
     def pad_and_concat(self, x, prev):
+
+        """
+            Matches the dimensions of prev and x and then concatenates.
+        """
 
         x_size = x.size()
         prev_size = prev.size()
@@ -152,27 +158,18 @@ class UNet(N.Module):
 
     def forward(self, x):
         x1 = self.down1(x)
-        print(f"After 1 down convs {x1.size()}")
         x2 = self.down2(x1)
-        print(f"After 2 down convs {x2.size()}")
         x3 = self.down3(x2)
-        print(f"After 3 down convs {x3.size()}")
         x4 = self.down4(x3)
-        print(f"After all down convs {x4.size()}")
 
         xm = self.middle1(x4)
-        print(f"After first middle {xm.size()}")
         xm = self.middle2(xm)
-        print(f"After second middle {xm.size()}")
 
         x = self.upconv4(xm, x4)
-        print(f"After first upconv {x.size()}")
         x = self.upconv3(x, x3)
-        print(f"After second upconv {x.size()}")
         x = self.upconv2(x, x2)
-        print(f"After third upconv {x.size()}")
         x = self.upconv1(x, x1)
-        print(f"After 4 upconvs {x.size()}")
+
         x = self.classify_conv(x)
 
         return x

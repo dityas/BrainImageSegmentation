@@ -28,11 +28,16 @@ class Trainer:
             for i, sample in enumerate(self.dataset):
                 _sample = sample
                 _in, _out = _sample
+
+                # Pad inputs and labels to fix convolutions.
                 _in = F.pad(_in, (0, 0, 0, 0, 0, 5), value=0)
                 _out = F.pad(_out, (0, 0, 0, 0, 0, 5), value=0)
+
+                # Move tensors to GPU
                 _in = _in.to(self.device)
                 _out = _out.to(self.device)
 
+                # Run prediction loop
                 prediction = self.model(A.Variable(_in))
                 print(prediction.size())
 
