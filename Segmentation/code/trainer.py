@@ -31,6 +31,7 @@ class Trainer:
             for j, sample in enumerate(self.dataset):
                 _sample = sample
                 _in, _out = _sample
+                self.optimizer.zero_grad()
 
                 # Pad inputs and labels to fix convolutions.
                 _in = F.pad(_in, (0, 0, 0, 0, 0, 5), value=0)
@@ -38,14 +39,14 @@ class Trainer:
 
                 # Move tensors to GPU
                 _in = _in.to(self.device)
-                _out = _out.to(self.device)
+                _out = _out.to(self.device).float()
 
                 # Run prediction loop
-                prediction = self.model(A.Variable(_in))
+                prediction = self.model(_in)
 
                 # Report loss and backprop.
                 loss = self.loss(prediction.view(-1), _out.view(-1))
                 self.logger.info(f"Epoch: {i} Batch: {j} Loss: {loss.data[0]}")
-                self.optimizer.zero_grad()
+
                 loss.backward()
                 self.optimizer.step()
