@@ -38,8 +38,8 @@ class Trainer:
                 _out = F.pad(_out, (0, 0, 0, 0, 0, 5), value=0)
 
                 # Move tensors to GPU
-                _in = _in.to(self.device)
-                _out = _out.to(self.device).float()
+                _in = _in.to(self.device).float32()
+                _out = _out.to(self.device).float32()
 
                 # Run prediction loop
                 prediction = self.model(_in)
