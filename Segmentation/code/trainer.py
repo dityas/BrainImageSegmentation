@@ -18,7 +18,7 @@ class Trainer:
         self.model = model
         self.model.to(self.device)
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
-        self.loss = N.BCELoss()
+        self.loss = N.BCEWithLogitsLoss()
         self.optimizer = O.Adagrad(params=self.model.parameters())
 
     def train(self, epochs=10):
@@ -45,14 +45,10 @@ class Trainer:
                 prediction = self.model(_in)
 
                 # Report loss and backprop.
-                print(_out.max())
-                print(_out.min())
-                print(prediction.max())
-                print(prediction.min())
-                #loss = self.loss(prediction.view(-1), _out.view(-1))
-                #self.logger.info(f"Epoch: {i} Batch: {j} Loss: {loss.data[0]}")
+                loss = self.loss(prediction.view(-1), _out.view(-1))
+                self.logger.info(f"Epoch: {i} Batch: {j} Loss: {loss.data[0]}")
 
-                #loss.backward()
-                #self.optimizer.step()
+                loss.backward()
+                self.optimizer.step()
 
                 break
