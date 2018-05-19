@@ -1,4 +1,5 @@
 import torch
+import torch.nn as N
 import torch.nn.functional as F
 import torch.optim as O
 import torch.autograd as A
@@ -14,18 +15,20 @@ class Trainer:
                                   batch_size=1,
                                   num_workers=2)
         self.model = model
+        self.model.to(self.device)
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
         self.device = "cuda:0"
+        self.loss = N.BCELoss()
+        self.optimizer = O.Adagrad(params=self.model.parameters())
 
     def train(self, epochs=10):
         # Put model in training mode.
-        self.model.to(self.device)
         self.model.train()
         self.logger.info("Model put in training mode.")
 
         # Training loop
         for i in range(epochs):
-            for i, sample in enumerate(self.dataset):
+            for j, sample in enumerate(self.dataset):
                 _sample = sample
                 _in, _out = _sample
 
@@ -39,6 +42,10 @@ class Trainer:
 
                 # Run prediction loop
                 prediction = self.model(A.Variable(_in))
-                print(prediction.size())
 
-                break
+                # Report loss and backprop.
+                loss = self.loss(prediction.view(-1), _out.view(-1))
+                self.logger.info(f"Epoch: {i} Batch: {j} Loss: {loss.data[0]}")
+                self.optimizer.zero_grad()
+                loss.backward()
+                self.optimizer.step()
