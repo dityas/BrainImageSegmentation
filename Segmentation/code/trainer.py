@@ -29,6 +29,7 @@ class Trainer:
                 _sample = sample
                 _in, _out = _sample
                 _in = F.pad(_in, (0, 0, 0, 0, 0, 5), value=0)
+                _out = F.pad(_out, (0, 0, 0, 0, 0, 5), value=0)
                 _in = _in.to(self.device)
                 _out = _out.to(self.device)
                 print(_out.size())
