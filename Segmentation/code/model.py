@@ -136,6 +136,9 @@ class UNet(N.Module):
                                 stride=1)
 
         self.upconv4 = UpConv(128, 64)
+        self.upconv3 = UpConv(64, 32)
+        self.upconv2 = UpConv(32, 16)
+        self.upconv1 = UpConv(16, 8)
 
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
         self.logger.debug("U-Net initialised")
