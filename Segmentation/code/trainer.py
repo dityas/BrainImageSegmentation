@@ -28,7 +28,7 @@ class Trainer:
             for i, sample in enumerate(self.dataset):
                 _sample = sample
                 _in, _out = _sample
-                _in = F.pad(_in, (0, 0, 0, 0, 0, 1), value=0)
+                _in = F.pad(_in, (0, 0, 0, 0, 0, 3), value=0)
                 _in = _in.to(self.device)
                 _out = _out.to(self.device)
 
