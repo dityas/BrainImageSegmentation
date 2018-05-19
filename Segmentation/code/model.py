@@ -155,7 +155,9 @@ class UNet(N.Module):
         print(f"After second middle {xm.size()}")
 
         xup4 = self.upconv4(xm, x4)
-        #xup3 = self.upconv3(xup4, x3)
+        print(f"After first upconv {xup4.size()}")
+        xup3 = self.upconv3(xup4, x3)
+        print(f"After first upconv {xup3.size()}")
         #xup2 = self.upconv2(x, x2)
         #xup1 = self.upconv1(xm, x1)
 
