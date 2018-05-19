@@ -1,8 +1,6 @@
-import torch
 import torch.nn as N
 import torch.nn.functional as F
 import torch.optim as O
-import torch.autograd as A
 from torch.utils.data import DataLoader
 import logging
 
