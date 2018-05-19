@@ -10,7 +10,7 @@ import logging
 class Trainer:
 
     def __init__(self, dataset, model):
-        self.device = "cuda:0"
+        self.device = "cuda:1"
         self.dataset = DataLoader(dataset,
                                   shuffle=True,
                                   batch_size=1,
@@ -45,8 +45,6 @@ class Trainer:
                 del _in
 
                 # Report loss and backprop.
-                print(prediction.view(-1).size())
-                print(_out.view(-1).size())
                 loss = self.loss(prediction.view(-1), _out.view(-1))
                 self.logger.info(f"Epoch: {i} Batch: {j} Loss: {loss.data[0]}")
 
