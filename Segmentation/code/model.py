@@ -96,7 +96,7 @@ class UpConv(N.Module):
                    depth_pad1, depth_pad2)
 
         prev = F.pad(input=prev, pad=padding, mode="constant", value=0)
-        x = x[:, :int(x_channels - prev_channels), :, :, :]
+        x = x[:, :int(x_channels - prev), :, :, :]
         return torch.cat((x, prev), dim=1)
 
     def forward(self, x, prev):
@@ -141,6 +141,12 @@ class UNet(N.Module):
         self.upconv2 = UpConv(10, 8)
         self.upconv1 = UpConv(8, 6)
 
+        self.classify_conv = N.Conv3d(in_channels=6,
+                                      out_channels=4,
+                                      kernel_size=1,
+                                      padding=0,
+                                      stride=1)
+
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
         self.logger.debug("U-Net initialised")
 
@@ -167,5 +173,6 @@ class UNet(N.Module):
         print(f"After third upconv {x.size()}")
         x = self.upconv1(x, x1)
         print(f"After 4 upconvs {x.size()}")
+        x = self.classify_conv(x)
 
         return x
