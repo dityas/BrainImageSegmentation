@@ -29,8 +29,7 @@ class Trainer:
         # Training loop
         for i in range(epochs):
             for j, sample in enumerate(self.dataset):
-                _sample = sample
-                _in, _out = _sample
+                _in, _out = sample
                 self.optimizer.zero_grad()
 
                 # Pad inputs and labels to fix convolutions.
@@ -43,7 +42,7 @@ class Trainer:
 
                 # Run prediction loop
                 prediction = self.model(_in)
-
+                del _in
                 # Report loss and backprop.
                 loss = self.loss(prediction.view(-1), _out.view(-1))
                 self.logger.info(f"Epoch: {i} Batch: {j} Loss: {loss.data[0]}")
