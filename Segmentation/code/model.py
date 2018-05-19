@@ -1,3 +1,4 @@
+import torch
 import torch.nn as N
 import torch.nn.functional as F
 import logging
@@ -62,7 +63,7 @@ class UpConv(N.Module):
         self.relu = N.ReLU()
         self.max_pool = N.MaxPool3d(kernel_size=2)
 
-    def pad(self, x, prev):
+    def pad_and_concat(self, x, prev):
 
         x_size = x.size()
         prev_size = prev.size()
@@ -70,6 +71,7 @@ class UpConv(N.Module):
         x_depth = x_size[2]
         x_height = x_size[3]
         x_width = x_size[4]
+        x_channels = x_size[1]
 
         prev_depth = prev_size[2]
         prev_height = prev_size[3]
@@ -92,13 +94,12 @@ class UpConv(N.Module):
                    depth_pad1, depth_pad2)
 
         prev = F.pad(input=prev, pad=padding, mode="constant", value=0)
-        print(f"After padding prev {prev.size()}")
-        print(f"After padding x {x[:,:64,:,:,:].size()}")
+        x = x[:, :int(x_channels/2), :, :, :]
+        return torch.cat((x, prev), dim=1)
 
     def forward(self, x, prev):
         x = self.up_conv(x)
-        self.pad(x, prev)
-
+        x = self.pad_and_concat(x, prev)
         # x = self.conv_in(x)
         # x = self.conv_out(x)
         # x = self.relu(x)
