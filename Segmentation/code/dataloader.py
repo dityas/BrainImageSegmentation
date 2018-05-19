@@ -55,7 +55,8 @@ class fMRIDataset(Dataset):
         label3 = 1.0 * (label == 3.0)
         label4 = 1.0 * (label == 4.0)
         label = numpy.stack([label1, label2, label3, label4], axis=0)
-
+        print(numpy.max(label))
+        print(numpy.min(label))
         return (_input, label)
 
     def __getitem__(self, idx):
