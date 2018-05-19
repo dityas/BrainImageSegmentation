@@ -74,12 +74,10 @@ class fMRIDataset(Dataset):
         label = seg
 
         self.logger.debug("Transposing matrices")
-        _input = numpy.transpose(_input, axes=[3, 2, 0, 1])
+        _input = numpy.transpose(_input, axes=[3, 2, 0, 1]) / numpy.max(_input)
         print(numpy.max(_input))
-        print(numpy.min(_input))
+        print(numpy.mean(_input))
         label = numpy.transpose(label, axes=[2, 0, 1])
-        print(numpy.max(label))
-        print(numpy.min(label))
 
         return (_input, label)
 
