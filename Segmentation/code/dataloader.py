@@ -75,10 +75,17 @@ class fMRIDataset(Dataset):
 
         self.logger.debug("Transposing matrices")
         _input = numpy.transpose(_input, axes=[3, 2, 0, 1]) / numpy.max(_input)
-        print(numpy.max(_input))
-        print(numpy.mean(_input))
         label = numpy.transpose(label, axes=[2, 0, 1])
 
+        # A really weird and possibly incorrect way of doing one-hot encoding
+        # for segmentation maps. (I should have probably used keras)
+        # Decisions... Decisions...
+        label1 = 1.0 * (label == 1.0)
+        label2 = 1.0 * (label == 2.0)
+        label3 = 1.0 * (label == 3.0)
+        label4 = 1.0 * (label == 4.0)
+        label = numpy.stack([label1, label2, label3, label4], axis=0)
+        
         return (_input, label)
 
     def __getitem__(self, idx):

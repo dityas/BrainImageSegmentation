@@ -31,6 +31,7 @@ class Trainer:
                 _in = F.pad(_in, (0, 0, 0, 0, 0, 5), value=0)
                 _in = _in.to(self.device)
                 _out = _out.to(self.device)
+                print(_out.size())
 
                 prediction = self.model(A.Variable(_in))
                 print(prediction.size())
