@@ -27,12 +27,11 @@ class Trainer:
         for i in range(epochs):
             for i, sample in enumerate(self.dataset):
                 _sample = sample
-
                 _in, _out = _sample
-                print(_in.shape)
-                #t_in, t_out = torch.from_numpy(_in), torch.from_numpy(_out)
+                _in = _in.to(self.device)
+                _out = _out.to(self.device)
 
-                #prediction = self.model(A.Variable(t_in))
-                #print(prediction.size())
+                prediction = self.model(A.Variable(_in))
+                print(prediction.size())
 
                 break
