@@ -93,7 +93,7 @@ class UpConv(N.Module):
 
         prev = F.pad(input=prev, pad=padding, mode="constant", value=0)
         print(f"After padding prev {prev.size()}")
-        print(f"After padding x {x.size()}")
+        print(f"After padding x {x[:,:64,:,:,:].size()}")
 
     def forward(self, x, prev):
         x = self.up_conv(x)
