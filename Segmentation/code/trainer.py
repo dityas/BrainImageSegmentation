@@ -43,7 +43,10 @@ class Trainer:
                 # Run prediction loop
                 prediction = self.model(_in)
                 del _in
+
                 # Report loss and backprop.
+                print(prediction.view(-1).size())
+                print(_out.view(-1).size())
                 loss = self.loss(prediction.view(-1), _out.view(-1))
                 self.logger.info(f"Epoch: {i} Batch: {j} Loss: {loss.data[0]}")
 
