@@ -97,7 +97,7 @@ class UpConv(N.Module):
 
     def forward(self, x, prev):
         x = self.up_conv(x)
-
+        self.pad(x, prev)
 
         # x = self.conv_in(x)
         # x = self.conv_out(x)
