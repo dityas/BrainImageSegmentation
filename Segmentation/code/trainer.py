@@ -93,11 +93,10 @@ class Trainer:
 
                 # Report loss and backprop.
                 loss = self.loss(prediction.view(-1), _out.view(-1))
-                val_loss = self.run_val_loop()
+                #val_loss = self.run_val_loop()
 
                 # Create metrics report.
-                report = {"training_loss": loss.item(),
-                          "validation_loss": val_loss}
+                report = {"training_loss": loss.item()}
 
                 self.info_printer.print_step_info(report=report,
                                                   epoch=i,
@@ -118,9 +117,9 @@ class InfoPrinter:
         self.batch = 0
         self.epoch = 0
 
-    def print_step_info(self, report, epoch, batch):
+    def print_step_info(self, report, epoch, batch, print_every=50):
 
-        if epoch != self.epoch:
+        if epoch != self.epoch or ((batch % print_every) == 0):
             print()
             self.epoch = epoch
 
