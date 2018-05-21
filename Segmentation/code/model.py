@@ -198,4 +198,5 @@ class LameCNN(N.Module):
         x = self.relu(x)
         x = self.max_pool(x)
         x = self.up_conv(x)
+        x = self.conv(x)
         return x
