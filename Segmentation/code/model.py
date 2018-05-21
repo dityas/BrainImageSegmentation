@@ -184,6 +184,7 @@ class LameCNN(N.Module):
     def __init__(self):
         self.conv = N.Conv3d(in_channels=4,
                              out_channels=4,
+                             kernel_size=3,
                              padding=0,
                              stride=1)
 
