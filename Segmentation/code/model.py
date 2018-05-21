@@ -191,7 +191,7 @@ class LameCNN(N.Module):
 
         self.max_pool = N.MaxPool3d(kernel_size=3)
         self.relu = N.ReLU()
-        self.up_conv = N.Upsample(scale_factor=2)
+        self.up_conv = N.Upsample(scale_factor=3)
 
     def forward(self, x):
         x = self.conv(x)
