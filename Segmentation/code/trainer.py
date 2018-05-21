@@ -49,9 +49,14 @@ class Trainer:
         """
         prediction = prediction.view(self.batch_size, -1).numpy()
         prediction = 1.0 * (prediction > 0.5)
+        labels = labels.view(self.batch_size, -1).numpy()
 
-        return f1_score(y_true=labels.view(self.batch_size, -1).numpy(),
-                        y_pred=prediction)
+        intersection = numpy.sum(numpy.dot(prediction, labels))
+        union = numpy.sum(prediction + labels)
+
+        dice = (2 * intersection) / (union + 0.00001)
+
+        return dice
 
     def run_val_loop(self):
         """
