@@ -184,10 +184,16 @@ class LameCNN(N.Module):
     def __init__(self):
         super().__init__()
         self.conv = N.Conv3d(in_channels=4,
-                             out_channels=4,
+                             out_channels=1,
                              kernel_size=3,
                              padding=1,
                              stride=1)
+
+        self.end_conv = N.Conv3d(in_channels=1,
+                                 out_channels=4,
+                                 kernel_size=3,
+                                 padding=1,
+                                 stride=1)
 
         self.max_pool = N.MaxPool3d(kernel_size=2)
         self.relu = N.ReLU()
@@ -198,5 +204,5 @@ class LameCNN(N.Module):
         x = self.relu(x)
         x = self.max_pool(x)
         x = self.up_conv(x)
-        x = self.conv(x)
+        x = self.end_conv(x)
         return x
