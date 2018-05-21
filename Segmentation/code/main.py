@@ -12,4 +12,4 @@ data_files = list((data_dir/"HGG").iterdir()) + \
 
 dataset = fMRIDataset(filenames=data_files, name="Dataset1")
 trainer = Trainer(dataset=dataset, model=LameCNN())
-trainer.train(epochs=1)
+trainer.train(epochs=10)
