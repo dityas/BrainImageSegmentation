@@ -173,3 +173,29 @@ class UNet(N.Module):
         x = self.classify_conv(x)
 
         return x
+
+
+class LameCNN(N.Module):
+    """
+        Really small FCNN to check if memory problems are not due to my
+        breath takingly poor coding abilities
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.conv = N.Conv3d(in_channels=4,
+                             out_channels=4,
+                             kernel_size=3,
+                             padding=1,
+                             stride=1)
+
+        self.max_pool = N.MaxPool3d(kernel_size=2)
+        self.relu = N.ReLU()
+        self.up_conv = N.Upsample(scale_factor=2)
+
+    def forward(self, x):
+        x = self.conv(x)
+        x = self.relu(x)
+        x = self.max_pool(x)
+        x = self.up_conv(x)
+        return x

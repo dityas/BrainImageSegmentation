@@ -8,7 +8,7 @@ import logging
 class Trainer:
 
     def __init__(self, dataset, model):
-        self.device = "cuda:0"
+        self.device = "cpu"
         self.dataset = DataLoader(dataset,
                                   shuffle=True,
                                   batch_size=1,
@@ -49,4 +49,4 @@ class Trainer:
                 loss.backward()
                 self.optimizer.step()
 
-                break
+                # break
