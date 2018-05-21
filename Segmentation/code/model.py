@@ -186,7 +186,7 @@ class LameCNN(N.Module):
         self.conv = N.Conv3d(in_channels=4,
                              out_channels=4,
                              kernel_size=3,
-                             padding=0,
+                             padding=1,
                              stride=1)
 
         self.max_pool = N.MaxPool3d(kernel_size=3)
