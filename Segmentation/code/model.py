@@ -189,11 +189,13 @@ class LameCNN(N.Module):
                              padding=0,
                              stride=1)
 
-        self.max_pool = N.MaxPool3d(kernel_size=2)
+        self.max_pool = N.MaxPool3d(kernel_size=3)
+        self.relu = N.ReLU()
         self.up_conv = N.Upsample(scale_factor=2)
 
     def forward(self, x):
         x = self.conv(x)
+        x = self.relu(x)
         x = self.max_pool(x)
         x = self.up_conv(x)
         return x
