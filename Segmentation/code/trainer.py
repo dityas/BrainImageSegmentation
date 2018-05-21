@@ -4,6 +4,7 @@ import torch.optim as O
 from torch.utils.data import DataLoader
 import logging
 import numpy
+from sklearn.metrics import f1_score
 
 
 class Trainer:
@@ -40,11 +41,27 @@ class Trainer:
         self.optimizer = O.Adagrad(params=self.model.parameters())
         self.info_printer = InfoPrinter()
 
-    def run_val_loop(self):
+    def dice_coeff(self, prediction, labels):
+        """
+            Computes dice coefficient.
+        """
+        prediction = prediction.view(-1).numpy()
+        prediction = 1.0 * (prediction > 0.5)
 
+        return f1_score(y_true=labels.view(-1).numpy(),
+                        y_pred=prediction)
+
+    def run_val_loop(self):
+        """
+            Runs a loop over the validation dataset and returns the mean
+            loss.
+        """
         losses = []
 
+        # Put model in evaluation mode.
         self.model.eval()
+
+        # Run validation loop
         for k, vsample in enumerate(self.val_dataset):
             _in, _out = vsample
 
@@ -65,7 +82,10 @@ class Trainer:
 
             losses.append(loss.item())
 
+        # Return to training mode for further training.
         self.model.train()
+
+        # Return mean loss on validation set.
         return numpy.mean(numpy.array(losses))
 
     def train(self, epochs=10):
@@ -94,9 +114,12 @@ class Trainer:
                 # Report loss and backprop.
                 loss = self.loss(prediction.view(-1), _out.view(-1))
                 #val_loss = self.run_val_loop()
+                dice = self.dice_coeff(prediction=prediction,
+                                       labels=_out)
 
                 # Create metrics report.
-                report = {"training_loss": loss.item()}
+                report = {"training_loss": loss.item(),
+                          "dice": dice}
 
                 self.info_printer.print_step_info(report=report,
                                                   epoch=i,
