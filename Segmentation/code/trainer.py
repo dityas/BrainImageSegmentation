@@ -47,9 +47,9 @@ class Trainer:
         """
             Computes dice coefficient.
         """
-        prediction = prediction.view(self.batch_size, -1).numpy()
+        prediction = prediction.view(-1).numpy()
         prediction = 1.0 * (prediction > 0.5)
-        labels = labels.view(self.batch_size, -1).numpy()
+        labels = labels.view(-1).numpy()
 
         intersection = numpy.sum(numpy.dot(prediction, labels))
         union = numpy.sum(prediction + labels)
