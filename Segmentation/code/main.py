@@ -18,5 +18,9 @@ train_dataset = fMRIDataset(filenames=train_files, name="TrainSet")
 val_dataset = fMRIDataset(filenames=val_files, name="ValidationSet")
 test_dataset = fMRIDataset(filenames=test_files, name="TestSet")
 
-trainer = Trainer(dataset=, model=LameCNN())
+trainer = Trainer(train_dataset=train_dataset,
+                  val_dataset=val_dataset,
+                  test_dataset=test_dataset,
+                  model=LameCNN())
+
 trainer.train(epochs=10)
