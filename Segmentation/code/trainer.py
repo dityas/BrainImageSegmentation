@@ -41,6 +41,7 @@ class Trainer:
                 # Run prediction loop
                 prediction = self.model(_in)
                 print(prediction.size())
+                print(_out.size())
                 #del _in
 
                 # Report loss and backprop.
