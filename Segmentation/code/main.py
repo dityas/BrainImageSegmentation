@@ -21,6 +21,7 @@ test_dataset = fMRIDataset(filenames=test_files, name="TestSet")
 trainer = Trainer(train_dataset=train_dataset,
                   val_dataset=val_dataset,
                   test_dataset=test_dataset,
-                  model=LameCNN())
+                  model=LameCNN(),
+                  batch_size=1)
 
 trainer.train(epochs=10)

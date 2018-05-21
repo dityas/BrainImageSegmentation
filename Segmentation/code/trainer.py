@@ -13,23 +13,25 @@ class Trainer:
                  train_dataset,
                  val_dataset,
                  test_dataset,
-                 model):
+                 model,
+                 batch_size=32):
 
         self.device = "cpu"
 
+        self.batch_size = batch_size
         self.train_dataset = DataLoader(train_dataset,
                                         shuffle=True,
-                                        batch_size=1,
+                                        batch_size=self.batch_size,
                                         num_workers=1)
 
         self.val_dataset = DataLoader(val_dataset,
                                       shuffle=True,
-                                      batch_size=1,
+                                      batch_size=self.batch_size,
                                       num_workers=1)
 
         self.test_dataset = DataLoader(test_dataset,
                                        shuffle=True,
-                                       batch_size=1,
+                                       batch_size=self.batch_size,
                                        num_workers=1)
 
         self.model = model
@@ -45,10 +47,10 @@ class Trainer:
         """
             Computes dice coefficient.
         """
-        prediction = prediction.view(-1).numpy()
+        prediction = prediction.view(self.batch_size, -1).numpy()
         prediction = 1.0 * (prediction > 0.5)
 
-        return f1_score(y_true=labels.view(-1).numpy(),
+        return f1_score(y_true=labels.view(self.batch_size, -1).numpy(),
                         y_pred=prediction)
 
     def run_val_loop(self):
@@ -78,7 +80,8 @@ class Trainer:
             del _in
 
             # Report loss and backprop.
-            loss = self.loss(prediction.view(-1), _out.view(-1))
+            loss = self.loss(prediction.view(self.batch_size, -1),
+                             _out.view(self.batch_size, -1))
 
             losses.append(loss.item())
 
@@ -112,7 +115,8 @@ class Trainer:
                 del _in
 
                 # Report loss and backprop.
-                loss = self.loss(prediction.view(-1), _out.view(-1))
+                loss = self.loss(prediction.view(self.batch_size, -1),
+                                 _out.view(self.batch_size, -1))
                 #val_loss = self.run_val_loop()
                 dice = self.dice_coeff(prediction=prediction.data,
                                        labels=_out.data)
