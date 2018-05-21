@@ -114,8 +114,8 @@ class Trainer:
                 # Report loss and backprop.
                 loss = self.loss(prediction.view(-1), _out.view(-1))
                 #val_loss = self.run_val_loop()
-                dice = self.dice_coeff(prediction=prediction,
-                                       labels=_out)
+                dice = self.dice_coeff(prediction=prediction.data,
+                                       labels=_out.data)
 
                 # Create metrics report.
                 report = {"training_loss": loss.item(),
