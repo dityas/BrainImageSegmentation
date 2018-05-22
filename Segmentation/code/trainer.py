@@ -51,6 +51,8 @@ class Trainer:
         prediction = 1.0 * (prediction > 0.5)
         labels = labels.view(-1).numpy()
 
+        print(numpy.sum(prediction))
+
         intersection = numpy.sum(numpy.dot(prediction, labels))
         union = numpy.sum(prediction + labels)
 
