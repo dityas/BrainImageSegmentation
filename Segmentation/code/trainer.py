@@ -123,12 +123,12 @@ class Trainer:
                 loss = self.loss(prediction.view(self.batch_size, -1),
                                  _out.view(self.batch_size, -1))
                 val_loss = self.run_val_loop()
-                dice = self.dice_coeff(prediction=prediction.data,
+                #dice = self.dice_coeff(prediction=prediction.data,
                                        labels=_out.data)
 
                 # Create metrics report.
                 report = {"training_loss": loss.item(),
-                          "dice": dice,
+                          #"dice": dice,
                           "val_loss": val_loss}
 
                 self.info_printer.print_step_info(report=report,
