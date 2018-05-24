@@ -47,7 +47,7 @@ class Trainer:
         """
             Computes dice coefficient.
         """
-        prediction = prediction.cpu().view(-1).numpy()
+        prediction = F.sigmoid(prediction).cpu().view(-1).numpy()
         prediction = 1.0 * (prediction > 0.5)
         labels = labels.cpu().view(-1).numpy()
 
