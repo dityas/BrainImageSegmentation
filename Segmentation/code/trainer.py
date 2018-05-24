@@ -54,6 +54,8 @@ class Trainer:
         intersection = numpy.sum(numpy.dot(prediction, labels))
         union = numpy.sum(prediction + labels)
 
+        print(numpy.sum(prediction))
+
         dice = (2 * intersection) / (union + 0.00001)
 
         return dice
@@ -122,9 +124,7 @@ class Trainer:
                 # Report loss and backprop.
                 loss = self.loss(prediction.view(self.batch_size, -1),
                                  _out.view(self.batch_size, -1))
-                #val_loss = self.run_val_loop()
-                #dice = self.dice_coeff(prediction=prediction.data,
-                #                       labels=_out.data)
+
 
                 # Create metrics report.
                 report = {"training_loss": loss.item()}
@@ -139,6 +139,16 @@ class Trainer:
                 self.optimizer.step()
 
                 # break
+
+            val_loss = self.run_val_loop()
+            dice = self.dice_coeff(prediction=prediction.data,
+                                   labels=_out.data)
+            report = {"dice": dice,
+                      "val_loss": val_loss}
+
+            self.info_printer.print_step_info(report=report,
+                                              epoch=i,
+                                              batch=j)
 
 
 class InfoPrinter:
