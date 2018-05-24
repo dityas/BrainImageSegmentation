@@ -22,6 +22,6 @@ trainer = Trainer(train_dataset=train_dataset,
                   val_dataset=val_dataset,
                   test_dataset=test_dataset,
                   model=LameCNN(),
-                  batch_size=1)
+                  batch_size=4)
 
 trainer.train(epochs=10)
