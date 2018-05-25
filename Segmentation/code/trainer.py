@@ -54,7 +54,7 @@ class Trainer:
         intersection = numpy.sum(numpy.dot(prediction, labels))
         union = numpy.sum(prediction + labels)
 
-        print(numpy.sum(prediction))
+        print(numpy.max(prediction))
 
         dice = (2 * intersection) / (union + 0.00001)
 
