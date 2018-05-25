@@ -108,7 +108,6 @@ class Trainer:
 
             for j, sample in enumerate(self.train_dataset):
                 _in, _out = sample
-                self.optimizer.zero_grad()
 
                 # Pad inputs and labels to fix convolutions.
                 _in = F.pad(_in, (0, 0, 0, 0, 0, 5), value=0)
@@ -135,7 +134,7 @@ class Trainer:
                                                   epoch=i,
                                                   batch=j)
                 # break
-
+            self.optimizer.zero_grad()
             loss = loss / j
             loss.backward()
 
