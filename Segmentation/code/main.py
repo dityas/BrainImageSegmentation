@@ -24,4 +24,4 @@ trainer = Trainer(train_dataset=train_dataset,
                   model=UNet(),
                   batch_size=1)
 
-trainer.train(epochs=10)
+trainer.train(epochs=20)

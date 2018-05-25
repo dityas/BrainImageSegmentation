@@ -125,29 +125,29 @@ class UNet(N.Module):
 
     def __init__(self):
         super().__init__()
-        self.down1 = DownConv(4, 5)
-        self.down2 = DownConv(5, 6)
-        self.down3 = DownConv(6, 7)
-        self.down4 = DownConv(7, 8)
+        self.down1 = DownConv(4, 8)
+        self.down2 = DownConv(8, 16)
+        self.down3 = DownConv(16, 32)
+        self.down4 = DownConv(32, 64)
 
-        self.middle1 = N.Conv3d(in_channels=8,
-                                out_channels=9,
+        self.middle1 = N.Conv3d(in_channels=64,
+                                out_channels=124,
                                 kernel_size=3,
                                 padding=1,
                                 stride=1)
 
-        self.middle2 = N.Conv3d(in_channels=9,
-                                out_channels=9,
+        self.middle2 = N.Conv3d(in_channels=124,
+                                out_channels=124,
                                 kernel_size=3,
                                 padding=1,
                                 stride=1)
 
-        self.upconv4 = UpConv(9, 8)
-        self.upconv3 = UpConv(8, 7)
-        self.upconv2 = UpConv(7, 6)
-        self.upconv1 = UpConv(6, 5)
+        self.upconv4 = UpConv(124, 64)
+        self.upconv3 = UpConv(64, 32)
+        self.upconv2 = UpConv(32, 16)
+        self.upconv1 = UpConv(16, 8)
 
-        self.classify_conv = N.Conv3d(in_channels=5,
+        self.classify_conv = N.Conv3d(in_channels=8,
                                       out_channels=4,
                                       kernel_size=1,
                                       padding=0,
