@@ -127,7 +127,9 @@ class Trainer:
                 loss = self.loss(prediction.view(self.batch_size, -1),
                                  _out.view(self.batch_size, -1))
 
-                batch_loss += loss
+                self.optimizer.zero_grad()
+                loss.backward()
+                self.optimizer.step()
 
                 # Create metrics report.
                 report = {"training_loss": loss.item()}
@@ -138,11 +140,7 @@ class Trainer:
                                                   epoch=i,
                                                   batch=j)
                 # break
-            self.optimizer.zero_grad()
-            batch_loss = batch_loss / j
-            batch_loss.backward()
 
-            self.optimizer.step()
             val_loss = self.run_val_loop()
             dice = self.dice_coeff(prediction=prediction.data,
                                    labels=_out.data)
