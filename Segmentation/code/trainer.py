@@ -26,7 +26,7 @@ class Trainer:
 
         self.val_dataset = DataLoader(val_dataset,
                                       shuffle=True,
-                                      batch_size=self.batch_size,
+                                      batch_size=1,
                                       num_workers=1)
 
         self.test_dataset = DataLoader(test_dataset,
