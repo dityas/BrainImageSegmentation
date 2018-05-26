@@ -106,6 +106,8 @@ class Trainer:
         # Training loop
         for i in range(epochs):
 
+            batch_loss = 0
+
             for j, sample in enumerate(self.train_dataset):
                 _in, _out = sample
 
@@ -125,6 +127,8 @@ class Trainer:
                 loss = self.loss(prediction.view(self.batch_size, -1),
                                  _out.view(self.batch_size, -1))
 
+                batch_loss += loss
+
                 # Create metrics report.
                 report = {"training_loss": loss.item()}
                           #"dice": dice,
@@ -135,8 +139,8 @@ class Trainer:
                                                   batch=j)
                 # break
             self.optimizer.zero_grad()
-            loss = loss / j
-            loss.backward()
+            batch_loss = batch_loss / j
+            batch_loss.backward()
 
             self.optimizer.step()
             val_loss = self.run_val_loop()
