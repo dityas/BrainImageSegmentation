@@ -11,7 +11,7 @@ data_files = list((data_dir/"HGG").iterdir()) + \
              list((data_dir/"LGG").iterdir())
 
 train_files = data_files[:214]
-val_files = data_files[214]
+val_files = [data_files[214]]
 test_files = data_files[215:]
 
 train_dataset = T1Dataset2d(filenames=train_files, name="TrainSet")
