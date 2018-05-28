@@ -158,9 +158,7 @@ class Trainer:
                     report = {"dice": val_metrics[1],
                               "val_loss": val_metrics[0]}
 
-                    self.info_printer.print_step_info(report=report,
-                                                      epoch=i,
-                                                      batch=j)
+                    self.info_printer.line_print(report=report)
 
 
 class InfoPrinter:
@@ -171,6 +169,17 @@ class InfoPrinter:
     def __init__(self):
         self.batch = 0
         self.epoch = 0
+
+    def line_print(self, report):
+        print()
+        metrics = ""
+
+        for key in report.keys():
+            metrics += f"{key}: {report[key]} "
+
+        print(f"{metrics}")
+
+        print()
 
     def print_step_info(self, report, epoch, batch, print_every=50):
 
