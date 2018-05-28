@@ -52,7 +52,8 @@ class Trainer:
         prediction = numpy.argmax(prediction, axis=1)
         labels = labels.cpu().view(self.batch_size, -1).numpy()
 
-        dice = f1_score(y_true=labels.ravel(), y_pred=prediction.ravel())
+        dice = f1_score(y_true=labels.ravel(), y_pred=prediction.ravel(),
+                        average='micro')
 
         return dice
 
