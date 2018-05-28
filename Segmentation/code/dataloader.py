@@ -78,6 +78,10 @@ class T1Dataset2d(Dataset):
         self.name = name
         self.logger.info(f"Dataset {self.name} initialised with {len(self.files)} samples.")
 
+        self.prev_input = None
+        self.prev_label = None
+        self.prev_file_no = None
+
     def __get_files(self, folder):
         return list(folder.iterdir())
 
@@ -124,8 +128,13 @@ class T1Dataset2d(Dataset):
         file_no = idx // 155
         slice_idx = idx % 155
 
-        image_folder = self.files[file_no]
-        _input, label = self.__read_single_image(image_folder)
+        if file_no == self.prev_file_no:
+            _input, label = self.prev_input, self.prev_label
+        else:
+            image_folder = self.files[file_no]
+            _input, label = self.__read_single_image(image_folder)
+            self.prev_input, self.prev_label = _input, label
+            self.prev_file_no = file_no
 
         sample = []
         for channels in range(_input.shape[-1]):
