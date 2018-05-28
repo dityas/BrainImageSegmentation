@@ -83,7 +83,7 @@ class T1Dataset2d(Dataset):
     def __len__(self):
         return len(self.files)
 
-    def __read_single_sample(self, image_folder):
+    def __read_single_image(self, image_folder):
         image_files = self.__get_files(image_folder)
 
         t1 = numpy.array(nibabel.load(str(list(filter(lambda x: "t1.nii" in str(x), image_files))[0])).get_data(), dtype=numpy.float32)
@@ -119,9 +119,25 @@ class T1Dataset2d(Dataset):
 
         return (_input, label)
 
-    def __getitem__(self, idx):
-        image_folder = self.files[idx]
-        _input, label = self.__read_single_sample(image_folder)
-        print(_input.shape)
+    def get_sample(self, idx):
+        file_no = idx // 155
+        slice_idx = idx % 155
+
+        image_folder = self.files[file_no]
+        _input, label = self.__read_single_image(image_folder)
+
+        sample = []
+        for channels in range(_input.shape[-1]):
+            sample.append(_input[:, :, slice_idx, channels])
+
+        sample = numpy.stack(sample, axis=2)
+        label = label[:, :, slice_idx]
+
+        print(sample.shape)
         print(label.shape)
-        return None
+
+        return (sample, label)
+
+    def __getitem__(self, idx):
+
+        return self.get_sample(idx)
