@@ -22,6 +22,6 @@ trainer = Trainer(train_dataset=train_dataset,
                   val_dataset=val_dataset,
                   test_dataset=test_dataset,
                   model=UNet2d(),
-                  batch_size=16)
+                  batch_size=64)
 
 trainer.train(epochs=10)

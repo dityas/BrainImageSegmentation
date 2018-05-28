@@ -76,7 +76,7 @@ class T1Dataset2d(Dataset):
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
         self.files = filenames
         self.name = name
-        self.logger.info(f"Dataset {self.name} initialised with {len(self.files)} samples.")
+        self.logger.info(f"Dataset {self.name} initialised with {155 * len(self.files)} samples.")
 
         self.prev_input = None
         self.prev_label = None
