@@ -48,7 +48,7 @@ class Trainer:
             Computes dice coefficient.
         """
         prediction = F.log_softmax(prediction).cpu().view(self.batch_size,
-                                                          4, -1).numpy()
+                                                          5, -1).numpy()
         prediction = numpy.argmax(prediction, axis=1)
         labels = labels.cpu().view(self.batch_size, -1).numpy()
 
