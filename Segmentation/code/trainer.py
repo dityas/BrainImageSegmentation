@@ -40,8 +40,8 @@ class Trainer:
 
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
 
-        self.loss = N.CrossEntropyLoss(weight=torch.Tensor([1., 10.,
-                                                            10., 10., 10.]))
+        weight = torch.Tensor([1., 2., 2., 2., 2.]).to(self.device)
+        self.loss = N.CrossEntropyLoss(weight=weight)
         self.optimizer = O.Adagrad(params=self.model.parameters())
         self.info_printer = InfoPrinter()
 
