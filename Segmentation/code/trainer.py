@@ -57,7 +57,7 @@ class Trainer:
         print(labels.shape)
 
         dice = f1_score(y_true=labels.ravel(), y_pred=prediction.ravel(),
-                        average='micro')
+                        average='weighted')
 
         return dice
 
@@ -67,7 +67,7 @@ class Trainer:
             loss.
         """
         losses = []
-
+        dice_coeffs = []
         # Put model in evaluation mode.
         self.model.eval()
 
@@ -91,13 +91,18 @@ class Trainer:
             loss = self.loss(prediction,
                              _out)
 
+            dice = self.dice_coeff(prediction=prediction.data,
+                                   labels=_out.data)
+
             losses.append(loss.item())
+            dice_coeffs.append(dice)
 
         # Return to training mode for further training.
         self.model.train()
 
         # Return mean loss on validation set.
-        return numpy.mean(numpy.array(losses))
+        return [numpy.array(losses),
+                numpy.array(dice_coeffs)]
 
     def train(self, epochs=10):
         # Put model in training mode.
@@ -140,11 +145,10 @@ class Trainer:
                                                   batch=j)
                 # break
 
-            val_loss = self.run_val_loop()
-            dice = self.dice_coeff(prediction=prediction.data,
-                                   labels=_out.data)
-            report = {"dice": dice,
-                      "val_loss": val_loss}
+            val_metrics = self.run_val_loop()
+
+            report = {"dice": val_metrics[1],
+                      "val_loss": val_metrics[0]}
 
             self.info_printer.print_step_info(report=report,
                                               epoch=i,
