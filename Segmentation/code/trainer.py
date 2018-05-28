@@ -53,9 +53,6 @@ class Trainer:
         prediction = numpy.argmax(prediction, axis=1)
         labels = labels.cpu().view(labels.size()[0], -1).numpy()
 
-        print(labels.ravel())
-        print(prediction.ravel())
-
         dice = f1_score(y_true=labels.ravel(), y_pred=prediction.ravel(),
                         average=None,
                         labels=[0, 1, 2, 3, 4])
@@ -94,7 +91,6 @@ class Trainer:
 
             dice = self.dice_coeff(prediction=prediction.data,
                                    labels=_out.data)
-            print(dice)
             losses.append(loss.item())
             dice_coeffs.append(dice)
 
