@@ -1,3 +1,4 @@
+import torch
 import torch.nn as N
 import torch.nn.functional as F
 import torch.optim as O
@@ -39,7 +40,8 @@ class Trainer:
 
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
 
-        self.loss = N.CrossEntropyLoss()
+        self.loss = N.CrossEntropyLoss(weight=torch.Tensor([1., 10.,
+                                                            10., 10., 10.]))
         self.optimizer = O.Adagrad(params=self.model.parameters())
         self.info_printer = InfoPrinter()
 
@@ -101,8 +103,7 @@ class Trainer:
         # Return mean loss on validation set.
         predictions = numpy.concatenate(predictions, axis=0)
         labels = numpy.concatenate(labels, axis=0)
-        print(predictions.shape)
-        print(labels.shape)
+
         dice = self.dice_coeff(prediction=predictions,
                                labels=labels)
         return [numpy.array(losses),
