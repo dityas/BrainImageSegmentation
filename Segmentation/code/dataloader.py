@@ -85,9 +85,7 @@ class T1Dataset2d(Dataset):
         return len(self.files)
 
     def __read_single_image(self, image_folder):
-        print(f"Reading {image_folder}")
         image_files = self.__get_files(image_folder)
-        print(f"Files {image_files}")
 
         t1 = numpy.array(nibabel.load(str(list(filter(lambda x: "t1.nii" in str(x), image_files))[0])).get_data(), dtype=numpy.float32)
         self.logger.debug(f"Finished reading T1 image")
@@ -126,6 +124,7 @@ class T1Dataset2d(Dataset):
         file_no = idx // 155
         slice_idx = idx % 155
 
+        print(f"Reading sample {idx}")
         image_folder = self.files[file_no]
         _input, label = self.__read_single_image(image_folder)
 
