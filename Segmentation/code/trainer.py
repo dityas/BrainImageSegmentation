@@ -81,7 +81,7 @@ class Trainer:
 
             # Move tensors to GPU
             _in = _in.to(self.device).float()
-            _out = _out.to(self.device).float()
+            _out = _out.to(self.device).long()
 
             # Run prediction loop
             prediction = self.model(_in)
