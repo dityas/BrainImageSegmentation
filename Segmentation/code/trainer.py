@@ -106,18 +106,20 @@ class Trainer:
         # Training loop
         for i in range(epochs):
 
-            batch_loss = 0
-
             for j, sample in enumerate(self.train_dataset):
                 _in, _out = sample
+                print(_in.size())
+                print(_out.size())
+
+                break
 
                 # Pad inputs and labels to fix convolutions.
-                _in = F.pad(_in, (0, 0, 0, 0, 0, 5), value=0)
-                _out = F.pad(_out, (0, 0, 0, 0, 0, 5), value=0)
+                # _in = F.pad(_in, (0, 0, 0, 0, 0, 5), value=0)
+                # _out = F.pad(_out, (0, 0, 0, 0, 0, 5), value=0)
 
                 # Move tensors to GPU
-                _in = _in.to(self.device).float()
-                _out = _out.to(self.device).float()
+                # _in = _in.to(self.device).float()
+                # _out = _out.to(self.device).float()
 
                 # Run prediction loop
                 prediction = self.model(_in)
