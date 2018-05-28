@@ -130,11 +130,10 @@ class T1Dataset2d(Dataset):
         for channels in range(_input.shape[-1]):
             sample.append(_input[:, :, slice_idx, channels])
 
-        sample = numpy.stack(sample, axis=2)
+        sample = numpy.stack(sample, axis=2) / numpy.max(sample)
         label = label[:, :, slice_idx]
 
-        print(sample.shape)
-        print(label.shape)
+        sample = numpy.transpose(sample, [2, 0, 1])
 
         return (sample, label)
 
