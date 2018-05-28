@@ -16,7 +16,7 @@ class Trainer:
                  model,
                  batch_size=32):
 
-        self.device = "cuda:0"
+        self.device = "cpu:0"
 
         self.batch_size = batch_size
         self.train_dataset = DataLoader(train_dataset,
@@ -121,37 +121,37 @@ class Trainer:
                 # _in = _in.to(self.device).float()
                 # _out = _out.to(self.device).float()
 
-                # Run prediction loop
-                prediction = self.model(_in)
-                del _in
-
-                # Report loss and backprop.
-                loss = self.loss(prediction.view(self.batch_size, -1),
-                                 _out.view(self.batch_size, -1))
-
-                self.optimizer.zero_grad()
-                loss.backward()
-                self.optimizer.step()
-
-                # Create metrics report.
-                report = {"training_loss": loss.item()}
-                          #"dice": dice,
-                          #"val_loss": val_loss}
-
-                self.info_printer.print_step_info(report=report,
-                                                  epoch=i,
-                                                  batch=j)
-                # break
-
-            val_loss = self.run_val_loop()
-            dice = self.dice_coeff(prediction=prediction.data,
-                                   labels=_out.data)
-            report = {"dice": dice,
-                      "val_loss": val_loss}
-
-            self.info_printer.print_step_info(report=report,
-                                              epoch=i,
-                                              batch=j)
+            #     # Run prediction loop
+            #     prediction = self.model(_in)
+            #     del _in
+            #
+            #     # Report loss and backprop.
+            #     loss = self.loss(prediction.view(self.batch_size, -1),
+            #                      _out.view(self.batch_size, -1))
+            #
+            #     self.optimizer.zero_grad()
+            #     loss.backward()
+            #     self.optimizer.step()
+            #
+            #     # Create metrics report.
+            #     report = {"training_loss": loss.item()}
+            #               #"dice": dice,
+            #               #"val_loss": val_loss}
+            #
+            #     self.info_printer.print_step_info(report=report,
+            #                                       epoch=i,
+            #                                       batch=j)
+            #     # break
+            #
+            # val_loss = self.run_val_loop()
+            # dice = self.dice_coeff(prediction=prediction.data,
+            #                        labels=_out.data)
+            # report = {"dice": dice,
+            #           "val_loss": val_loss}
+            #
+            # self.info_printer.print_step_info(report=report,
+            #                                   epoch=i,
+            #                                   batch=j)
 
 
 class InfoPrinter:
