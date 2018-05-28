@@ -144,6 +144,7 @@ class Trainer:
                                                   batch=j)
                 # break
 
+            print()
             val_metrics = self.run_val_loop()
 
             report = {"dice": val_metrics[1],
