@@ -49,10 +49,11 @@ class Trainer:
         """
         prediction = F.log_softmax(prediction,
                                    dim=1).cpu().numpy()
+
+        print(prediction.shape)
         prediction = numpy.argmax(prediction, axis=1)
         labels = labels.cpu().view(self.batch_size, -1).numpy()
 
-        print(prediction.shape)
         print(labels.shape)
 
         dice = f1_score(y_true=labels.ravel(), y_pred=prediction.ravel(),
