@@ -105,7 +105,7 @@ class Trainer:
         return [numpy.array(losses),
                 numpy.array(dice_coeffs)]
 
-    def train(self, epochs=10):
+    def train(self, epochs=10, track_every=20):
         # Put model in training mode.
         self.model.train()
         self.logger.info("Model put in training mode.")
@@ -145,17 +145,18 @@ class Trainer:
                                                   epoch=i,
                                                   batch=j,
                                                   print_every=5)
-                # break
 
-            print()
-            val_metrics = self.run_val_loop()
+                if j % track_every == 0 and j != 0:
 
-            report = {"dice": val_metrics[1],
-                      "val_loss": val_metrics[0]}
+                    print()
+                    val_metrics = self.run_val_loop()
 
-            self.info_printer.print_step_info(report=report,
-                                              epoch=i,
-                                              batch=j)
+                    report = {"dice": val_metrics[1],
+                              "val_loss": val_metrics[0]}
+
+                    self.info_printer.print_step_info(report=report,
+                                                      epoch=i,
+                                                      batch=j)
 
 
 class InfoPrinter:
