@@ -82,7 +82,7 @@ class T1Dataset2d(Dataset):
         return list(folder.iterdir())
 
     def __len__(self):
-        return len(self.files)
+        return len(self.files) * 155
 
     def __read_single_image(self, image_folder):
         image_files = self.__get_files(image_folder)
