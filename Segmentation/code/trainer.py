@@ -54,7 +54,7 @@ class Trainer:
         labels = labels.cpu().view(labels.size()[0], -1).numpy()
 
         dice = f1_score(y_true=labels.ravel(), y_pred=prediction.ravel(),
-                        average=None)
+                        average='micro')
 
         return dice
 
@@ -71,7 +71,7 @@ class Trainer:
         # Run validation loop
         for k, vsample in enumerate(self.val_dataset):
             _in, _out = vsample
-            print("running")
+            print(f"running {k}")
 
             # # Pad inputs and labels to fix convolutions.
             # _in = F.pad(_in, (0, 0, 0, 0, 0, 5), value=0)
