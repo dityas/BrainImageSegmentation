@@ -47,11 +47,6 @@ class Trainer:
         """
             Computes dice coefficient.
         """
-        prediction = F.log_softmax(prediction,
-                                   dim=1).cpu().numpy()
-
-        prediction = numpy.argmax(prediction, axis=1)
-        labels = labels.cpu().view(labels.size()[0], -1).numpy()
 
         dice = f1_score(y_true=labels.ravel(), y_pred=prediction.ravel(),
                         average=None,
@@ -65,7 +60,8 @@ class Trainer:
             loss.
         """
         losses = []
-        dice_coeffs = []
+        predictions = []
+        labels = []
         # Put model in evaluation mode.
         self.model.eval()
 
@@ -89,17 +85,28 @@ class Trainer:
             loss = self.loss(prediction,
                              _out)
 
-            dice = self.dice_coeff(prediction=prediction.data,
-                                   labels=_out.data)
+            prediction = F.log_softmax(prediction,
+                                       dim=1).cpu().numpy()
+
+            prediction = numpy.argmax(prediction, axis=1)
+            label = _out.cpu().view(_out.size()[0], -1).numpy()
+
             losses.append(loss.item())
-            dice_coeffs.append(dice)
+            predictions.append(prediction)
+            labels.append(label)
 
         # Return to training mode for further training.
         self.model.train()
 
         # Return mean loss on validation set.
+        predictions = numpy.stack(predictions, axis=0)
+        labels = numpy.stack(labels, axis=0)
+        print(predictions.shape)
+        print(labels.shape)
+        dice = self.dice_coeff(prediction=predictions,
+                               labels=labels)
         return [numpy.array(losses),
-                numpy.array(dice_coeffs)]
+                dice]
 
     def train(self, epochs=10, track_every=20):
         # Put model in training mode.
