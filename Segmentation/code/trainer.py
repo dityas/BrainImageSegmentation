@@ -86,10 +86,10 @@ class Trainer:
                              _out)
 
             prediction = F.log_softmax(prediction,
-                                       dim=1).cpu().numpy()
+                                       dim=1).data.cpu().numpy()
 
             prediction = numpy.argmax(prediction, axis=1)
-            label = _out.cpu().view(_out.size()[0], -1).numpy()
+            label = _out.data.cpu().view(_out.size()[0], -1).numpy()
 
             losses.append(loss.item())
             predictions.append(prediction)
