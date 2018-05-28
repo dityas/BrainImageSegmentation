@@ -71,6 +71,7 @@ class Trainer:
         # Run validation loop
         for k, vsample in enumerate(self.val_dataset):
             _in, _out = vsample
+            print("running")
 
             # # Pad inputs and labels to fix convolutions.
             # _in = F.pad(_in, (0, 0, 0, 0, 0, 5), value=0)
@@ -90,7 +91,7 @@ class Trainer:
 
             dice = self.dice_coeff(prediction=prediction.data,
                                    labels=_out.data)
-
+            print(dice)
             losses.append(loss.item())
             dice_coeffs.append(dice)
 
