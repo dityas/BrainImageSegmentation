@@ -44,7 +44,8 @@ class fMRIDataset(Dataset):
         label = seg
 
         self.logger.debug("Transposing matrices")
-        _input = numpy.transpose(_input, axes=[3, 2, 0, 1]) / numpy.max(_input)
+        _input = numpy.transpose(_input, axes=[3, 2, 0, 1]) / \
+                                (numpy.max(_input) + 0.0001)
         label = numpy.transpose(label, axes=[2, 0, 1])
 
         # A really weird and possibly incorrect way of doing one-hot encoding
@@ -130,7 +131,7 @@ class T1Dataset2d(Dataset):
         for channels in range(_input.shape[-1]):
             sample.append(_input[:, :, slice_idx, channels])
 
-        sample = numpy.stack(sample, axis=2) / numpy.max(sample)
+        sample = numpy.stack(sample, axis=2) / (numpy.max(sample) + 0.0001)
         label = label[:, :, slice_idx]
 
         sample = numpy.transpose(sample, [2, 0, 1])

@@ -26,7 +26,7 @@ class Trainer:
 
         self.val_dataset = DataLoader(val_dataset,
                                       shuffle=True,
-                                      batch_size=1,
+                                      batch_size=self.batch_size,
                                       num_workers=1)
 
         self.test_dataset = DataLoader(test_dataset,
@@ -39,7 +39,7 @@ class Trainer:
 
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
 
-        self.loss = N.BCEWithLogitsLoss()
+        self.loss = N.CrossEntropyLoss()
         self.optimizer = O.Adagrad(params=self.model.parameters())
         self.info_printer = InfoPrinter()
 
@@ -47,9 +47,10 @@ class Trainer:
         """
             Computes dice coefficient.
         """
-        prediction = F.sigmoid(prediction).cpu().view(-1).numpy()
-        prediction = 1.0 * (prediction > 0.5)
-        labels = labels.cpu().view(-1).numpy()
+        prediction = F.log_softmax(prediction).cpu().view(self.batch_size,
+                                                          4, -1).numpy()
+        prediction = numpy.argmax(prediction, axis=1)
+        labels = labels.cpu().view(self.batch_size, -1).numpy()
 
         intersection = numpy.sum(numpy.dot(prediction, labels))
         union = numpy.sum(prediction + labels)
@@ -74,9 +75,9 @@ class Trainer:
         for k, vsample in enumerate(self.val_dataset):
             _in, _out = vsample
 
-            # Pad inputs and labels to fix convolutions.
-            _in = F.pad(_in, (0, 0, 0, 0, 0, 5), value=0)
-            _out = F.pad(_out, (0, 0, 0, 0, 0, 5), value=0)
+            # # Pad inputs and labels to fix convolutions.
+            # _in = F.pad(_in, (0, 0, 0, 0, 0, 5), value=0)
+            # _out = F.pad(_out, (0, 0, 0, 0, 0, 5), value=0)
 
             # Move tensors to GPU
             _in = _in.to(self.device).float()
@@ -87,8 +88,8 @@ class Trainer:
             del _in
 
             # Report loss and backprop.
-            loss = self.loss(prediction.view(self.batch_size, -1),
-                             _out.view(self.batch_size, -1))
+            loss = self.loss(prediction,
+                             _out)
 
             losses.append(loss.item())
 
@@ -108,50 +109,46 @@ class Trainer:
 
             for j, sample in enumerate(self.train_dataset):
                 _in, _out = sample
-                print(_in.size())
-                print(_out.size())
-
-                break
 
                 # Pad inputs and labels to fix convolutions.
                 # _in = F.pad(_in, (0, 0, 0, 0, 0, 5), value=0)
                 # _out = F.pad(_out, (0, 0, 0, 0, 0, 5), value=0)
 
                 # Move tensors to GPU
-                # _in = _in.to(self.device).float()
-                # _out = _out.to(self.device).float()
+                _in = _in.to(self.device).float()
+                _out = _out.to(self.device).long()
 
-            #     # Run prediction loop
-            #     prediction = self.model(_in)
-            #     del _in
-            #
-            #     # Report loss and backprop.
-            #     loss = self.loss(prediction.view(self.batch_size, -1),
-            #                      _out.view(self.batch_size, -1))
-            #
-            #     self.optimizer.zero_grad()
-            #     loss.backward()
-            #     self.optimizer.step()
-            #
-            #     # Create metrics report.
-            #     report = {"training_loss": loss.item()}
-            #               #"dice": dice,
-            #               #"val_loss": val_loss}
-            #
-            #     self.info_printer.print_step_info(report=report,
-            #                                       epoch=i,
-            #                                       batch=j)
-            #     # break
-            #
-            # val_loss = self.run_val_loop()
-            # dice = self.dice_coeff(prediction=prediction.data,
-            #                        labels=_out.data)
-            # report = {"dice": dice,
-            #           "val_loss": val_loss}
-            #
-            # self.info_printer.print_step_info(report=report,
-            #                                   epoch=i,
-            #                                   batch=j)
+                # Run prediction loop
+                prediction = self.model(_in)
+                del _in
+
+                # Report loss and backprop.
+                loss = self.loss(prediction,
+                                 _out)
+
+                self.optimizer.zero_grad()
+                loss.backward()
+                self.optimizer.step()
+
+                # Create metrics report.
+                report = {"training_loss": loss.item()}
+                          #"dice": dice,
+                          #"val_loss": val_loss}
+
+                self.info_printer.print_step_info(report=report,
+                                                  epoch=i,
+                                                  batch=j)
+                # break
+
+            val_loss = self.run_val_loop()
+            dice = self.dice_coeff(prediction=prediction.data,
+                                   labels=_out.data)
+            report = {"dice": dice,
+                      "val_loss": val_loss}
+
+            self.info_printer.print_step_info(report=report,
+                                              epoch=i,
+                                              batch=j)
 
 
 class InfoPrinter:
