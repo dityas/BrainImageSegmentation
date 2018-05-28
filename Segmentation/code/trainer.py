@@ -99,8 +99,8 @@ class Trainer:
         self.model.train()
 
         # Return mean loss on validation set.
-        predictions = numpy.stack(predictions, axis=0)
-        labels = numpy.stack(labels, axis=0)
+        predictions = numpy.concatenate(predictions, axis=0)
+        labels = numpy.concatenate(labels, axis=0)
         print(predictions.shape)
         print(labels.shape)
         dice = self.dice_coeff(prediction=predictions,
