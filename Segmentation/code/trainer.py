@@ -51,7 +51,7 @@ class Trainer:
                                    dim=1).cpu().numpy()
 
         prediction = numpy.argmax(prediction, axis=1)
-        labels = labels.cpu().view(self.batch_size, -1).numpy()
+        labels = labels.cpu().view(labels.size()[0], -1).numpy()
 
         print(prediction.shape)
         print(labels.shape)
