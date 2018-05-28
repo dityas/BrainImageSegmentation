@@ -16,7 +16,7 @@ class Trainer:
                  model,
                  batch_size=32):
 
-        self.device = "cpu:0"
+        self.device = "cuda:0"
 
         self.batch_size = batch_size
         self.train_dataset = DataLoader(train_dataset,
