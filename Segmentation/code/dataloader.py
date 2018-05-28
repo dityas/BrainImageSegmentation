@@ -124,7 +124,6 @@ class T1Dataset2d(Dataset):
         file_no = idx // 155
         slice_idx = idx % 155
 
-        print(f"Reading sample {idx}")
         image_folder = self.files[file_no]
         _input, label = self.__read_single_image(image_folder)
 

@@ -75,7 +75,6 @@ class Trainer:
         # Run validation loop
         for k, vsample in enumerate(self.val_dataset):
             _in, _out = vsample
-            print(f"running {k} {_in.size()}")
 
             # # Pad inputs and labels to fix convolutions.
             # _in = F.pad(_in, (0, 0, 0, 0, 0, 5), value=0)
