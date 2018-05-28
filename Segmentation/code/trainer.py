@@ -139,7 +139,8 @@ class Trainer:
 
                 self.info_printer.print_step_info(report=report,
                                                   epoch=i,
-                                                  batch=j)
+                                                  batch=j,
+                                                  print_every=5)
                 # break
 
             print()
