@@ -89,28 +89,24 @@ class T1Dataset2d(Dataset):
         t1 = numpy.array(nibabel.load(str(list(filter(lambda x: "t1.nii" in str(x), image_files))[0])).get_data(), dtype=numpy.float32)
         self.logger.debug(f"Finished reading T1 image")
 
-        # t2 = numpy.array(nibabel.load(str(list(filter(lambda x: "t2.nii" in str(x), image_files))[0])).get_data(), dtype=numpy.float32)
-        # self.logger.debug(f"Finished reading T2 image")
-        #
-        # flair = numpy.array(nibabel.load(str(list(filter(lambda x: "flair.nii" in str(x), image_files))[0])).get_data(), dtype=numpy.float32)
-        # self.logger.debug(f"Finished reading flair image")
-        #
-        # t1ce = numpy.array(nibabel.load(str(list(filter(lambda x: "t1ce.nii" in str(x), image_files))[0])).get_data(), dtype=numpy.float32)
-        # self.logger.debug(f"Finished reading T1CE image")
-        #
+        t2 = numpy.array(nibabel.load(str(list(filter(lambda x: "t2.nii" in str(x), image_files))[0])).get_data(), dtype=numpy.float32)
+        self.logger.debug(f"Finished reading T2 image")
+
+        flair = numpy.array(nibabel.load(str(list(filter(lambda x: "flair.nii" in str(x), image_files))[0])).get_data(), dtype=numpy.float32)
+        self.logger.debug(f"Finished reading flair image")
+
+        t1ce = numpy.array(nibabel.load(str(list(filter(lambda x: "t1ce.nii" in str(x), image_files))[0])).get_data(), dtype=numpy.float32)
+        self.logger.debug(f"Finished reading T1CE image")
+
         seg = numpy.array(nibabel.load(str(list(filter(lambda x: "seg.nii" in str(x), image_files))[0])).get_data(), dtype=numpy.float32)
         self.logger.debug(f"Finished reading segmentation map")
 
-        # _input = numpy.stack([t1, t2, t1ce, flair], axis=3)
+        _input = numpy.stack([t1, t2, t1ce, flair], axis=3)
         label = seg
-        _input = t1
-
-        print(label.shape)
-        print(_input.shape)
 
         self.logger.debug("Transposing matrices")
-        _input = numpy.transpose(_input, axes=[3, 2, 0, 1]) / numpy.max(_input)
-        label = numpy.transpose(label, axes=[2, 0, 1])
+        # _input = numpy.transpose(_input, axes=[3, 2, 0, 1]) / numpy.max(_input)
+        # label = numpy.transpose(label, axes=[2, 0, 1])
 
         # A really weird and possibly incorrect way of doing one-hot encoding
         # for segmentation maps. (I should have probably used keras)
@@ -125,6 +121,7 @@ class T1Dataset2d(Dataset):
 
     def __getitem__(self, idx):
         image_folder = self.files[idx]
-        sample = self.__read_single_sample(image_folder)
-
-        return sample
+        _input, label = self.__read_single_sample(image_folder)
+        print(_input.shape)
+        print(label.shape)
+        return None
