@@ -53,9 +53,6 @@ class Trainer:
         prediction = numpy.argmax(prediction, axis=1)
         labels = labels.cpu().view(labels.size()[0], -1).numpy()
 
-        print(prediction.shape)
-        print(labels.shape)
-
         dice = f1_score(y_true=labels.ravel(), y_pred=prediction.ravel(),
                         average='weighted')
 
