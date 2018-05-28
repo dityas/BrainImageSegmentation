@@ -105,6 +105,9 @@ class T1Dataset2d(Dataset):
         label = seg
         _input = t1
 
+        print(label.shape)
+        print(_input.shape)
+
         self.logger.debug("Transposing matrices")
         _input = numpy.transpose(_input, axes=[3, 2, 0, 1]) / numpy.max(_input)
         label = numpy.transpose(label, axes=[2, 0, 1])

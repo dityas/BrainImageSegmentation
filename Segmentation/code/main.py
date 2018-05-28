@@ -5,7 +5,7 @@ from model import LameCNN
 import logging
 
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 data_dir = Path("../data")
 data_files = list((data_dir/"HGG").iterdir()) + \
              list((data_dir/"LGG").iterdir())
