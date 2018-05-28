@@ -54,7 +54,7 @@ class Trainer:
         labels = labels.cpu().view(labels.size()[0], -1).numpy()
 
         dice = f1_score(y_true=labels.ravel(), y_pred=prediction.ravel(),
-                        average='weighted')
+                        average=None)
 
         return dice
 
