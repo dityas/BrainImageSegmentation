@@ -52,12 +52,7 @@ class Trainer:
         prediction = numpy.argmax(prediction, axis=1)
         labels = labels.cpu().view(self.batch_size, -1).numpy()
 
-        intersection = numpy.sum(numpy.dot(prediction, labels))
-        union = numpy.sum(prediction + labels)
-
-        #print(numpy.max(prediction))
-
-        dice = (2 * intersection) / (union + 0.00001)
+        dice = f1_score(y_true=labels, y_pred=prediction)
 
         return dice
 
