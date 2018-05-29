@@ -147,7 +147,7 @@ class UNet2d(N.Module):
         self.upconv1 = UpConv(32, 16)
 
         self.classify_conv = N.Conv2d(in_channels=16,
-                                      out_channels=5,
+                                      out_channels=2,
                                       kernel_size=1,
                                       padding=0,
                                       stride=1)

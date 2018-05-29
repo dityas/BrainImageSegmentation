@@ -107,7 +107,7 @@ class T1Dataset2d(Dataset):
         self.logger.debug(f"Finished reading segmentation map")
 
         _input = numpy.stack([t1, t2, t1ce, flair], axis=3)
-        label = seg
+        label = 1.0 * (seg > 0)
 
         self.logger.debug("Transposing matrices")
         # _input = numpy.transpose(_input, axes=[3, 2, 0, 1]) / numpy.max(_input)

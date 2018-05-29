@@ -40,7 +40,7 @@ class Trainer:
 
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
 
-        weight = torch.Tensor([1., 10., 10., 10., 10.]).to(self.device)
+        weight = torch.Tensor([1., 100.]).to(self.device)
         self.loss = N.CrossEntropyLoss(weight=weight)
         self.optimizer = O.Adagrad(params=self.model.parameters())
         self.info_printer = InfoPrinter()
@@ -52,7 +52,7 @@ class Trainer:
 
         dice = f1_score(y_true=labels.ravel(), y_pred=prediction.ravel(),
                         average=None,
-                        labels=[0, 1, 2, 3, 4])
+                        labels=[0, 1])
 
         return dice
 
