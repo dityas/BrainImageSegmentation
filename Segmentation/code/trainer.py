@@ -108,7 +108,7 @@ class Trainer:
 
         dice = self.dice_coeff(prediction=predictions,
                                labels=labels)
-        return [numpy.array(losses),
+        return [numpy.mean(numpy.array(losses)),
                 dice]
 
     def train(self, epochs=10, track_every=20):
