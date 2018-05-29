@@ -1,7 +1,7 @@
 from pathlib import Path
-from dataloader import fMRIDataset
+from dataloader import T1Dataset2d
 from trainer import Trainer
-from model import UNet, LameCNN
+from unet2d import UNet2d
 import logging
 
 
@@ -10,18 +10,18 @@ data_dir = Path("../data")
 data_files = list((data_dir/"HGG").iterdir()) + \
              list((data_dir/"LGG").iterdir())
 
-train_files = data_files[:200]
-val_files = data_files[200:215]
-test_files = data_files[215:]
+train_files = data_files[:250]
+val_files = data_files[251: 253]
+test_files = data_files[254:]
 
-train_dataset = fMRIDataset(filenames=train_files, name="TrainSet")
-val_dataset = fMRIDataset(filenames=val_files, name="ValidationSet")
-test_dataset = fMRIDataset(filenames=test_files, name="TestSet")
+train_dataset = T1Dataset2d(filenames=train_files, name="TrainSet")
+val_dataset = T1Dataset2d(filenames=val_files, name="ValidationSet")
+test_dataset = T1Dataset2d(filenames=test_files, name="TestSet")
 
 trainer = Trainer(train_dataset=train_dataset,
                   val_dataset=val_dataset,
                   test_dataset=test_dataset,
-                  model=UNet(),
-                  batch_size=1)
+                  model=UNet2d(),
+                  batch_size=64)
 
-trainer.train(epochs=20)
+trainer.train(epochs=20, track_every=100)
