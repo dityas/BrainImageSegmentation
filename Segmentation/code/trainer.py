@@ -49,8 +49,8 @@ class Trainer:
         """
             Computes dice coefficient.
         """
-        inter = numpy.dot(labels.ravel(), prediction.ravel())
-        union = labels.ravel() + prediction.ravel()
+        inter = numpy.sum(numpy.dot(labels.ravel(), prediction.ravel()))
+        union = numpy.sum(labels.ravel() + prediction.ravel())
         dice = ( 2 * inter / (union + 0.00001))
         # dice = f1_score(y_true=labels.ravel(), y_pred=prediction.ravel(),
         #                 average=None,
