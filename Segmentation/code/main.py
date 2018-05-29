@@ -10,8 +10,8 @@ data_dir = Path("../data")
 data_files = list((data_dir/"HGG").iterdir()) + \
              list((data_dir/"LGG").iterdir())
 
-train_files = data_files[:210]
-val_files = data_files[210: 214]
+train_files = data_files[:212]
+val_files = data_files[212: 214]
 test_files = data_files[215:]
 
 train_dataset = T1Dataset2d(filenames=train_files, name="TrainSet")
