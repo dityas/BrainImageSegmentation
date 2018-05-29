@@ -10,9 +10,9 @@ data_dir = Path("../data")
 data_files = list((data_dir/"HGG").iterdir()) + \
              list((data_dir/"LGG").iterdir())
 
-train_files = data_files[:212]
-val_files = data_files[212: 214]
-test_files = data_files[215:]
+train_files = data_files[:250]
+val_files = data_files[251: 253]
+test_files = data_files[254:]
 
 train_dataset = T1Dataset2d(filenames=train_files, name="TrainSet")
 val_dataset = T1Dataset2d(filenames=val_files, name="ValidationSet")
@@ -24,4 +24,4 @@ trainer = Trainer(train_dataset=train_dataset,
                   model=UNet2d(),
                   batch_size=64)
 
-trainer.train(epochs=50)
+trainer.train(epochs=20, track_every=100)
