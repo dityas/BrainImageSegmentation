@@ -2,3 +2,4 @@ data/
 __pycache__/
 *.zip
 .ipynb_checkpoints/
+*.log
