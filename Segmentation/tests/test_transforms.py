@@ -26,8 +26,9 @@ class TestScaler(unittest.TestCase):
     def test_scaler(self):
         for x in self.Xs:
             self.scaler.partial_fit(x)
-            x = self.scaler.transform(x)
+            x = self.scaler._transform(x)
             self.assertTrue(numpy.max(x) <= 1.0 and numpy.min(x) >= 0.0)
+
 
 if __name__ == "__main__":
     unittest.main()

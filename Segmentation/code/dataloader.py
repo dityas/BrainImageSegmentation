@@ -1,6 +1,7 @@
 import numpy
 import nibabel
 from torch.utils.data import Dataset
+from torchvision import transforms
 from sklearn.preprocessing import MinMaxScaler
 import logging
 
@@ -73,7 +74,7 @@ class Dataset2d(Dataset):
     PyTorch wrapper for dataset.
     """
 
-    def __init__(self, filenames, name="Unnamed_dataset"):
+    def __init__(self, filenames, name="Unnamed_dataset", transform=None):
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
         self.files = filenames
         self.name = name
@@ -83,7 +84,12 @@ class Dataset2d(Dataset):
         self.prev_label = None
         self.prev_file_no = None
 
-        self.scaler = MinMaxScaler()
+        if transform is not None:
+            assert type(transform) == list, "Tranforms should be through a list"
+            self.transform = transforms.Compose(transform)
+
+        else:
+            self.transform = None
 
     def __get_files(self, folder):
         return list(folder.iterdir())
@@ -152,4 +158,9 @@ class Dataset2d(Dataset):
 
     def __getitem__(self, idx):
 
-        return self.get_sample(idx)
+        sample, label = self.get_sample(idx)
+
+        if self.transform:
+            sample, label = self.transform((sample, label))
+
+        return (sample, label)
