@@ -1,6 +1,7 @@
 import numpy
 import nibabel
 from torch.utils.data import Dataset
+from sklearn.preprocessing import MinMaxScaler
 import logging
 
 
@@ -82,6 +83,8 @@ class Dataset2d(Dataset):
         self.prev_label = None
         self.prev_file_no = None
 
+        self.scaler = MinMaxScaler()
+
     def __get_files(self, folder):
         return list(folder.iterdir())
 
@@ -140,7 +143,7 @@ class Dataset2d(Dataset):
         for channels in range(_input.shape[-1]):
             sample.append(_input[:, :, slice_idx, channels])
 
-        sample = numpy.stack(sample, axis=2) / (numpy.max(sample) + 0.0001)
+        sample = numpy.stack(sample, axis=2)
         label = label[:, :, slice_idx]
 
         sample = numpy.transpose(sample, [2, 0, 1])
