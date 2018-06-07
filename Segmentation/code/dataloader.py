@@ -66,7 +66,7 @@ class fMRIDataset(Dataset):
         return sample
 
 
-class T1Dataset2d(Dataset):
+class Dataset2d(Dataset):
 
     """
     PyTorch wrapper for dataset.
