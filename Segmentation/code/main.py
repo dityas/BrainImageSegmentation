@@ -15,12 +15,9 @@ train_files = data_files[:250]
 val_files = data_files[251: 253]
 test_files = data_files[254:]
 
-train_dataset = Dataset2d(filenames=train_files, name="TrainSet",
-                          transform=[MinMaxScaler()])
-val_dataset = Dataset2d(filenames=val_files, name="ValidationSet",
-                        transform=[MinMaxScaler()])
-test_dataset = Dataset2d(filenames=test_files, name="TestSet",
-                         transform=[MinMaxScaler()])
+train_dataset = Dataset2d(filenames=train_files, name="TrainSet")
+val_dataset = Dataset2d(filenames=val_files, name="ValidationSet")
+test_dataset = Dataset2d(filenames=test_files, name="TestSet")
 
 trainer = Trainer(train_dataset=train_dataset,
                   val_dataset=val_dataset,

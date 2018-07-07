@@ -147,7 +147,13 @@ class Dataset2d(Dataset):
 
         sample = []
         for channels in range(_input.shape[-1]):
-            sample.append(_input[:, :, slice_idx, channels])
+            image = _input[:, :, slice_idx, channels]
+            min = numpy.min(image)
+            max = numpy.max(image)
+            if max > min:
+                sample.append((image - min)/(max - min))
+            else:
+                sample.append(image * 0.0)
 
         sample = numpy.stack(sample, axis=2)
         label = label[:, :, slice_idx]
