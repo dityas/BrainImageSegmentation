@@ -150,7 +150,7 @@ class Trainer:
                 self.info_printer.print_step_info(report=report,
                                                   epoch=i,
                                                   batch=j,
-                                                  print_every=20)
+                                                  print_every=100)
 
                 if j % track_every == 0 and j != 0:
 
