@@ -1,6 +1,8 @@
 import numpy
 import nibabel
 from torch.utils.data import Dataset
+from torchvision import transforms
+from sklearn.preprocessing import MinMaxScaler
 import logging
 
 
@@ -66,13 +68,13 @@ class fMRIDataset(Dataset):
         return sample
 
 
-class T1Dataset2d(Dataset):
+class Dataset2d(Dataset):
 
     """
     PyTorch wrapper for dataset.
     """
 
-    def __init__(self, filenames, name="Unnamed_dataset"):
+    def __init__(self, filenames, name="Unnamed_dataset", transform=None):
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
         self.files = filenames
         self.name = name
@@ -81,6 +83,13 @@ class T1Dataset2d(Dataset):
         self.prev_input = None
         self.prev_label = None
         self.prev_file_no = None
+
+        if transform is not None:
+            assert type(transform) == list, "Tranforms should be through a list"
+            self.transform = transforms.Compose(transform)
+
+        else:
+            self.transform = None
 
     def __get_files(self, folder):
         return list(folder.iterdir())
@@ -138,9 +147,15 @@ class T1Dataset2d(Dataset):
 
         sample = []
         for channels in range(_input.shape[-1]):
-            sample.append(_input[:, :, slice_idx, channels])
+            image = _input[:, :, slice_idx, channels]
+            min = numpy.min(image)
+            max = numpy.max(image)
+            if max > min:
+                sample.append((image - min)/(max - min))
+            else:
+                sample.append(image * 0.0)
 
-        sample = numpy.stack(sample, axis=2) / (numpy.max(sample) + 0.0001)
+        sample = numpy.stack(sample, axis=2)
         label = label[:, :, slice_idx]
 
         sample = numpy.transpose(sample, [2, 0, 1])
@@ -149,4 +164,9 @@ class T1Dataset2d(Dataset):
 
     def __getitem__(self, idx):
 
-        return self.get_sample(idx)
+        sample, label = self.get_sample(idx)
+
+        if self.transform:
+            sample, label = self.transform((sample, label))
+
+        return (sample, label)
