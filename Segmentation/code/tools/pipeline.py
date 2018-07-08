@@ -54,5 +54,3 @@ class SegmentationPipeline:
                 # Apply transforms
                 if self.transforms is not None:
                     _in, _target = self.transforms(_in, _target)
-
-                
