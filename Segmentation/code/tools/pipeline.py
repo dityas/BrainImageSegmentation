@@ -95,13 +95,10 @@ class SegmentationPipeline:
                        val_loss=float('nan'),
                        metric=float('nan')):
 
-        banner = f"""
-                  Epoch: {epoch} | Batch: {batch}
-                  loss: {loss:.5f}
-                  val_loss: {val_loss:.5f}
-                  metric: {metric:.5f}
-                  """
-
+        banner = f"Epoch: {epoch} | Batch: {batch} "
+        banner += f"loss: {loss:.5f} "
+        banner += f"val_loss: {val_loss:.5f} "
+        banner += f"metric: {metric:.5f} "
         print(banner, end="\r")
 
     def train(self,
