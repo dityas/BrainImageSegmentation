@@ -47,8 +47,8 @@ loss_fn = N.CrossEntropyLoss(weight=weight)
 
 # Define metric.
 def dice_score(predictions, targets):
-    predictions = predictions.view(-1)
-    targets = targets.view(-1)
+    predictions = predictions.view(-1).float()
+    targets = targets.view(-1).float()
 
     intersection = torch.dot(predictions, targets).sum()
     union = predictions.sum() + targets.sum()
