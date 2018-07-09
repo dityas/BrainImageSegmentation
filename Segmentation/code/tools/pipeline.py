@@ -24,6 +24,7 @@ class SegmentationPipeline:
         self.validation_set = validation_set
         self.loss = loss
         self.model = model
+        self.model.to(self.device)
         self.optimizer = optimizer(params=self.model.parameters())
         self.metric = metric
 
@@ -33,9 +34,6 @@ class SegmentationPipeline:
             self.transforms = None
 
         self.device = device
-
-        self.model.to(self.device)
-
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
 
     def __move_sample_to_device(self, sample):
