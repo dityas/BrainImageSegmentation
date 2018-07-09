@@ -74,15 +74,20 @@ class SegmentationPipeline:
 
         self.model.eval()
         losses = []
+        targets = []
+        predictions = []
 
         for j, sample in enumerate(self.validation_set):
             _in, _target = self.__move_sample_to_device(sample)
             losses.append(self.loss(self.model(_in), _target).item())
+            predictions.append(self.model.predict(_in).item())
+            targets.append(_target.item())
 
         loss = torch.mean(torch.tensor(losses))
 
         if self.metric is not None:
-            metric = self.metric()
+            metric = self.metric(torch.tensor(predictions),
+                                 torch.tensor(targets))
         else:
             metric = float('nan')
 

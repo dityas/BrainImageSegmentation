@@ -43,6 +43,18 @@ test_dataset = DataLoader(test_dataset,
 weight = torch.Tensor([1., 2.]).to(device)
 loss_fn = N.CrossEntropyLoss(weight=weight)
 
+
+# Define metric.
+def dice_score(predictions, targets):
+    predictions = predictions.view(-1)
+    targets = targets.view(-1)
+
+    intersection = torch.dot(predictions, targets).sum()
+    union = predictions.sum() + targets.sum()
+
+    return (2.0 * intersection / (union + 0.0000001))
+
+
 # Run pipeline.
 pipeline = SegmentationPipeline(training_set=train_dataset,
                                 validation_set=val_dataset,
@@ -50,6 +62,7 @@ pipeline = SegmentationPipeline(training_set=train_dataset,
                                 loss=loss_fn,
                                 model=UNet2d(),
                                 optimizer=O.Adagrad,
-                                device=device)
+                                device=device,
+                                metric=dice_score)
 
 pipeline.train(epochs=10, track_every=100)
