@@ -77,7 +77,7 @@ class SegmentationPipeline:
 
         for j, sample in enumerate(self.validation_set):
             _in, _target = self.__move_sample_to_device(sample)
-            losses.append(self.loss(self.model(_in), _target))
+            losses.append(self.loss(self.model(_in), _target).item())
 
         loss = torch.mean(torch.tensor(losses))
 
@@ -86,6 +86,7 @@ class SegmentationPipeline:
         else:
             metric = float('nan')
 
+        self.model.train()
         return loss, metric
 
     def print_progress(self,
