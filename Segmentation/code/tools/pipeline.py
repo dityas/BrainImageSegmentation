@@ -43,8 +43,8 @@ class SegmentationPipeline:
             Move the tensors to specified device.
         """
         _in, _target = sample
-        _in.to(self.device)
-        _target.to(self.device)
+        _in = _in.to(self.device).float()
+        _target = _target.to(self.device).long()
 
         return _in, _target
 
