@@ -80,8 +80,8 @@ class SegmentationPipeline:
         for j, sample in enumerate(self.validation_set):
             _in, _target = self.__move_sample_to_device(sample)
             losses.append(self.loss(self.model(_in), _target).item())
-            predictions.append(self.model.predict(_in).item())
-            targets.append(_target.item())
+            predictions.append(self.model.predict(_in))
+            targets.append(_target)
 
         loss = torch.mean(torch.tensor(losses))
 
