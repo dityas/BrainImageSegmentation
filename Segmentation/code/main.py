@@ -66,4 +66,4 @@ pipeline = SegmentationPipeline(training_set=train_dataset,
                                 device=device,
                                 metric=dice_score)
 
-pipeline.train(epochs=10, track_every=10)
+pipeline.train(epochs=20, track_every=100)
