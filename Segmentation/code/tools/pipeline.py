@@ -101,6 +101,14 @@ class SegmentationPipeline:
         banner += f"metric: {metric:.5f} "
         print(banner, end="\r")
 
+    def update_validation_result(self, epoch, batch, loss):
+        val_loss, metric = self.run_validation()
+        self.print_progress(epoch=epoch,
+                            batch=batch,
+                            loss=loss,
+                            val_loss=val_loss,
+                            metric=metric)
+
     def train(self,
               epochs=10,
               track_every=20):
@@ -119,9 +127,11 @@ class SegmentationPipeline:
                                     batch=j,
                                     loss=loss)
 
-            val_loss, metric = self.run_validation()
-            self.print_progress(epoch=i,
-                                batch=j,
-                                loss=loss,
-                                val_loss=val_loss,
-                                metric=metric)
+                if j % track_every == 0 and j != 0:
+                    self.update_validation_result(epoch=i,
+                                                  batch=j,
+                                                  loss=loss)
+
+            self.update_validation_result(epoch=i,
+                                          batch=j,
+                                          loss=loss)
