@@ -45,3 +45,5 @@ pipeline = SegmentationPipeline(training_set=train_dataset,
                                 model=UNet2d(),
                                 optimizer=O.Adagrad,
                                 device="cuda:0")
+
+pipeline.train(epochs=10, track_every=5)
