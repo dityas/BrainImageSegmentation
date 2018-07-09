@@ -32,7 +32,8 @@ train_dataset = DataLoader(train_dataset,
 val_dataset = DataLoader(val_dataset,
                          shuffle=False,
                          batch_size=16,
-                         num_workers=1)
+                         num_workers=1,
+                         drop_last=True)
 
 test_dataset = DataLoader(test_dataset,
                           shuffle=True,

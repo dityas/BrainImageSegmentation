@@ -85,9 +85,6 @@ class SegmentationPipeline:
 
         loss = torch.mean(torch.tensor(losses))
 
-        for i in predictions:
-            print(i.size())
-
         if self.metric is not None:
             metric = self.metric(torch.stack(predictions),
                                  torch.stack(targets))
