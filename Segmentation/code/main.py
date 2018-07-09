@@ -8,6 +8,10 @@ import logging
 import torch.nn as N
 import torch.optim as O
 
+# Specify device
+device = "cuda:0"
+
+# Set up datasets
 logging.basicConfig(level=logging.INFO)
 data_dir = Path("../data")
 data_files = list((data_dir/"HGG").iterdir()) + \
@@ -35,15 +39,17 @@ test_dataset = DataLoader(test_dataset,
                           batch_size=32,
                           num_workers=1)
 
-weight = torch.Tensor([1., 2.])
+# Initialize loss functions.
+weight = torch.Tensor([1., 2.]).to(device)
 loss_fn = N.CrossEntropyLoss(weight=weight)
 
+# Run pipeline.
 pipeline = SegmentationPipeline(training_set=train_dataset,
                                 validation_set=val_dataset,
                                 testing_set=test_dataset,
                                 loss=loss_fn,
                                 model=UNet2d(),
                                 optimizer=O.Adagrad,
-                                device="cuda:0")
+                                device=device)
 
 pipeline.train(epochs=10, track_every=5)
