@@ -109,6 +109,7 @@ class SegmentationPipeline:
                             loss=loss,
                             val_loss=val_loss,
                             metric=metric)
+        print()
 
     def train(self,
               epochs=10,
