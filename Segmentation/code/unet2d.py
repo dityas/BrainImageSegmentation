@@ -175,4 +175,4 @@ class UNet2d(N.Module):
 
     def predict(self, x):
         _out = self.forward(x)
-        return torch.argmax(_out, dim=1)
+        return torch.argmax(F.log_softmax(_out, dim=1), dim=1)

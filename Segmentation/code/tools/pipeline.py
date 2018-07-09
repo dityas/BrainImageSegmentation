@@ -102,9 +102,9 @@ class SegmentationPipeline:
                        metric=float('nan')):
 
         banner = f"Epoch: {epoch:3d} | Batch: {batch:3d} "
-        banner += f"loss: {loss:.5f} "
-        banner += f"val_loss: {val_loss:.5f} "
-        banner += f"metric: {metric:.5f} "
+        banner += f"loss: {loss:2.5f} "
+        banner += f"val_loss: {val_loss:2.5f} "
+        banner += f"metric: {metric:2.5f} "
         print(banner, end="\r")
 
     def update_validation_result(self, epoch, batch, loss):
