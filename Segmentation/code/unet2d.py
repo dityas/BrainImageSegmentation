@@ -172,3 +172,7 @@ class UNet2d(N.Module):
         x = self.classify_conv(x)
 
         return x
+
+    def predict(self, x):
+        _out = self.forward(x)
+        return torch.argmax(_out, dim=1)
