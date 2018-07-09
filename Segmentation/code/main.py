@@ -9,7 +9,7 @@ import torch.nn as N
 import torch.optim as O
 
 # Specify device
-device = "cuda:0"
+device = "cuda:1"
 
 # Set up datasets
 logging.basicConfig(level=logging.INFO)
