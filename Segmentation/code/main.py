@@ -26,12 +26,12 @@ val_dataset = Dataset2d(filenames=val_files, name="ValidationSet")
 test_dataset = Dataset2d(filenames=test_files, name="TestSet")
 train_dataset = DataLoader(train_dataset,
                            shuffle=False,
-                           batch_size=32,
+                           batch_size=64,
                            num_workers=1)
 
 val_dataset = DataLoader(val_dataset,
                          shuffle=False,
-                         batch_size=4,
+                         batch_size=16,
                          num_workers=1)
 
 test_dataset = DataLoader(test_dataset,
@@ -52,4 +52,4 @@ pipeline = SegmentationPipeline(training_set=train_dataset,
                                 optimizer=O.Adagrad,
                                 device=device)
 
-pipeline.train(epochs=10, track_every=5)
+pipeline.train(epochs=10, track_every=100)
