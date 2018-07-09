@@ -86,8 +86,8 @@ class SegmentationPipeline:
         loss = torch.mean(torch.tensor(losses))
 
         if self.metric is not None:
-            metric = self.metric(torch.tensor(predictions),
-                                 torch.tensor(targets))
+            metric = self.metric(torch.stack(predictions),
+                                 torch.stack(targets))
         else:
             metric = float('nan')
 
