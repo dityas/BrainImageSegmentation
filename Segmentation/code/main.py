@@ -50,8 +50,8 @@ def dice_loss(predictions, targets):
     """
         Computes loss based on combination of BCE and Dice.
     """
-    bce_loss = loss_fn(predictions, targets)
-    predictions = torch.argmax(F.log_softmax(predictions, dim=1), dim=1)
+    # bce_loss = loss_fn(predictions, targets)
+    predictions = F.log_softmax(predictions, dim=1)
     predictions = predictions.view(-1).float()
     targets = targets.view(-1).float()
 
@@ -60,7 +60,7 @@ def dice_loss(predictions, targets):
 
     dice_score = (2.0 * intersection / (union + 0.0000001))
 
-    return (bce_loss + (1 - dice_score))
+    return (1 - dice_score)
 
 
 # Define metric.
