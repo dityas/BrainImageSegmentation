@@ -6,6 +6,7 @@ import torch
 from torch.utils.data import DataLoader
 import logging
 import torch.nn as N
+import torch.nn.functional as F
 import torch.optim as O
 
 # Specify device
@@ -41,8 +42,25 @@ test_dataset = DataLoader(test_dataset,
                           num_workers=1)
 
 # Initialize loss functions.
-weight = torch.Tensor([1., 2.]).to(device)
-loss_fn = N.CrossEntropyLoss(weight=weight)
+# weight = torch.Tensor([1., 2.]).to(device)
+loss_fn = N.CrossEntropyLoss()
+
+
+def dice_loss(predictions, targets):
+    """
+        Computes loss based on combination of BCE and Dice.
+    """
+    bce_loss = loss_fn(predictions, targets)
+    predictions = torch.argmax(F.log_softmax(predictions, dim=1), dim=1)
+    predictions = predictions.view(-1).float()
+    targets = targets.view(-1).float()
+
+    intersection = torch.dot(predictions, targets).sum()
+    union = predictions.sum() + targets.sum()
+
+    dice_score = (2.0 * intersection / (union + 0.0000001))
+
+    return (bce_loss + (1 - dice_score))
 
 
 # Define metric.
@@ -60,7 +78,7 @@ def dice_score(predictions, targets):
 pipeline = SegmentationPipeline(training_set=train_dataset,
                                 validation_set=val_dataset,
                                 testing_set=test_dataset,
-                                loss=loss_fn,
+                                loss=dice_loss,
                                 model=UNet2d(),
                                 optimizer=O.Adagrad,
                                 device=device,
