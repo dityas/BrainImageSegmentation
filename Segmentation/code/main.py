@@ -51,8 +51,9 @@ def dice_loss(predictions, targets):
         Computes loss based on combination of BCE and Dice.
     """
     # bce_loss = loss_fn(predictions, targets)
-    predictions = F.log_softmax(predictions, dim=1)
+    predictions = F.log_softmax(predictions, dim=1).select(1, 1)
     print(predictions.size())
+    print(targets)
     predictions = predictions.view(-1).float()
     targets = targets.view(-1).float()
 
