@@ -138,16 +138,16 @@ class SegmentationPipeline:
 
                 # Run single loop.
                 loss = self.partial_fit(sample)
-                batch_losses.append(loss)
+                # batch_losses.append(loss)
                 self.print_progress(epoch=i,
                                     batch=j,
                                     loss=loss)
 
                 if j % track_every == 0 and j != 0:
-                    batch_loss = numpy.mean(numpy.array(batch_losses))
+                    # batch_loss = numpy.mean(numpy.array(batch_losses))
                     val_loss, metric = self.update_validation_result(epoch=i,
                                                                      batch=j,
-                                                                     loss=batch_loss)
+                                                                     loss=loss)
 
                     stop_training = self.estopper.check_stop_training(val_loss)
 
