@@ -28,7 +28,7 @@ test_dataset = Dataset2d(filenames=test_files, name="TestSet")
 train_dataset = DataLoader(train_dataset,
                            shuffle=False,
                            batch_size=64,
-                           num_workers=2)
+                           num_workers=1)
 
 val_dataset = DataLoader(val_dataset,
                          shuffle=False,
