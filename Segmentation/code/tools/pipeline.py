@@ -132,18 +132,21 @@ class SegmentationPipeline:
 
         for i in range(epochs):
             stop_training = False
+            batch_losses = []
             for j, sample in enumerate(self.training_set):
 
                 # Run single loop.
                 loss = self.partial_fit(sample)
+                batch_losses.append(loss)
                 self.print_progress(epoch=i,
                                     batch=j,
                                     loss=loss)
 
                 if j % track_every == 0 and j != 0:
+                    batch_loss = torch.mean(torch.tensor(batch_losses))
                     val_loss, metric = self.update_validation_result(epoch=i,
                                                                      batch=j,
-                                                                     loss=loss)
+                                                                     loss=batch_loss)
 
                     stop_training = self.estopper.check_stop_training(val_loss)
 
@@ -154,9 +157,10 @@ class SegmentationPipeline:
 
             val_loss, metric = self.update_validation_result(epoch=i,
                                                              batch=j,
-                                                             loss=loss)
+                                                             loss=batch_loss)
 
             if stop_training:
+                print("Early stopping.")
                 break
 
         # End training loop.
