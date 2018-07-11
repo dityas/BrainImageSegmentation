@@ -2,6 +2,7 @@ import logging
 from torchvision import transforms
 import torch
 from tools.early_stopper import EarlyStopper
+import numpy
 
 
 class SegmentationPipeline:
@@ -143,7 +144,7 @@ class SegmentationPipeline:
                                     loss=loss)
 
                 if j % track_every == 0 and j != 0:
-                    batch_loss = torch.mean(torch.tensor(batch_losses))
+                    batch_loss = numpy.mean(numpy.array(batch_losses))
                     val_loss, metric = self.update_validation_result(epoch=i,
                                                                      batch=j,
                                                                      loss=batch_loss)
