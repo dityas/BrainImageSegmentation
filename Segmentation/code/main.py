@@ -60,7 +60,7 @@ def dice_loss(predictions, targets):
 
     dice_score = (2.0 * intersection / (union + 0.0000001))
 
-    return (0.5 * bce_loss) + (1 - dice_score)
+    return (0.5 * bce_loss) # + (1 - dice_score)
 
 
 # Define metric.
