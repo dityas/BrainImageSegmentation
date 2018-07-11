@@ -1,6 +1,7 @@
 import logging
 from torchvision import transforms
 import torch
+from tools.early_stopper import EarlyStopper
 
 
 class SegmentationPipeline:
@@ -16,12 +17,14 @@ class SegmentationPipeline:
                  loss,
                  optimizer,
                  transform_list=None,
+                 early_stopping_patience=10,
                  metric=None,
                  device="cpu:0"):
 
         self.training_set = training_set
         self.testing_set = testing_set
         self.validation_set = validation_set
+        self.estopper = EarlyStopper(patience=early_stopping_patience)
         self.loss = loss
         self.device = device
         self.model = model
@@ -116,6 +119,8 @@ class SegmentationPipeline:
                             metric=metric)
         print()
 
+        return val_loss, metric
+
     def train(self,
               epochs=10,
               track_every=20):
@@ -126,6 +131,7 @@ class SegmentationPipeline:
         print("Model put in training mode.")
 
         for i in range(epochs):
+            stop_training = False
             for j, sample in enumerate(self.training_set):
 
                 # Run single loop.
@@ -135,10 +141,22 @@ class SegmentationPipeline:
                                     loss=loss)
 
                 if j % track_every == 0 and j != 0:
-                    self.update_validation_result(epoch=i,
-                                                  batch=j,
-                                                  loss=loss)
+                    val_loss, metric = self.update_validation_result(epoch=i,
+                                                                     batch=j,
+                                                                     loss=loss)
 
-            self.update_validation_result(epoch=i,
-                                          batch=j,
-                                          loss=loss)
+                    stop_training = self.estopper.check_stop_training(val_loss)
+
+                    if stop_training:
+                        break
+
+            # End batch iteration.
+
+            val_loss, metric = self.update_validation_result(epoch=i,
+                                                             batch=j,
+                                                             loss=loss)
+
+            if stop_training:
+                break
+
+        # End training loop.
