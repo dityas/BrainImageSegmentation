@@ -77,23 +77,16 @@ class SegmentationPipeline:
     def run_validation(self):
 
         self.model.eval()
-        losses = []
-        targets = []
-        predictions = []
 
         for j, sample in enumerate(self.validation_set):
             _in, _target = self.__move_sample_to_device(sample)
-            losses.append(self.loss(self.model(_in), _target).item())
-            predictions.append(self.model.predict(_in).view(-1))
-            targets.append(_target.view(-1))
-            if j == 10:
-                break
-
-        loss = torch.mean(torch.tensor(losses))
+            loss = self.loss(self.model(_in), _target).item()
+            predictions = self.model.predict(_in)
+            targets = _target
+            break
 
         if self.metric is not None:
-            metric = self.metric(torch.stack(predictions),
-                                 torch.stack(targets))
+            metric = self.metric(predictions, targets)
         else:
             metric = float('nan')
 

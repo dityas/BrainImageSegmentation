@@ -32,7 +32,7 @@ train_dataset = DataLoader(train_dataset,
 
 val_dataset = DataLoader(val_dataset,
                          shuffle=True,
-                         batch_size=2,
+                         batch_size=32,
                          num_workers=1,
                          drop_last=True)
 
@@ -65,9 +65,7 @@ def dice_loss(predictions, targets):
 
 # Define metric.
 def dice_score(predictions, targets):
-    print(targets.size())
-    print(predictions.size())
-    predictions = predictions.select(1, 1).view(-1).float()
+    predictions = predictions.view(-1).float()
     targets = targets.view(-1).float()
 
     intersection = torch.dot(predictions, targets).sum()
