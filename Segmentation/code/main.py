@@ -61,7 +61,7 @@ def dice_loss(predictions, targets):
     intersection = torch.dot(predictions, targets).sum()
     union = predictions.sum() + targets.sum()
 
-    dice_score = (2.0 * intersection / (union))
+    dice_score = (2.0 * (intersection + 1) / (union + 1))
 
     return (0.1 * bce_loss) + (1 - dice_score)
 
@@ -74,7 +74,7 @@ def dice_score(predictions, targets):
     intersection = torch.dot(predictions, targets).sum()
     union = predictions.sum() + targets.sum()
 
-    return (2.0 * intersection / (union))
+    return (2.0 * (intersection + 1) / (union + 1))
 
 
 # Run pipeline.
