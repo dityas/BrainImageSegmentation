@@ -53,7 +53,7 @@ def dice_loss(predictions, targets):
     """
         Computes loss based on combination of BCE and Dice.
     """
-    bce_loss = loss_fn(predictions, targets)
+    # bce_loss = loss_fn(predictions, targets)
     predictions = F.log_softmax(predictions, dim=1).select(1, 1)
     predictions = predictions.contiguous().view(-1).float()
     targets = targets.view(-1).float()
@@ -63,7 +63,7 @@ def dice_loss(predictions, targets):
 
     dice_score = (2.0 * (intersection + 1) / (union + 1))
 
-    return (0.1 * bce_loss) + (1 - dice_score)
+    return (1 - dice_score)
 
 
 # Define metric.
