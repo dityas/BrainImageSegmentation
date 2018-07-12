@@ -8,6 +8,8 @@ import logging
 import torch.nn as N
 import torch.nn.functional as F
 import torch.optim as O
+from random import shuffle
+
 
 # Specify device
 device = "cuda:1"
@@ -17,6 +19,7 @@ logging.basicConfig(level=logging.INFO)
 data_dir = Path("../data")
 data_files = list((data_dir/"HGG").iterdir()) + \
              list((data_dir/"LGG").iterdir())
+shuffle(data_files)
 
 train_files = data_files[:250]
 val_files = data_files[251: 260]
