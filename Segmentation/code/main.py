@@ -68,6 +68,8 @@ def dice_score(predictions, targets):
     predictions = predictions.select(1, 1).view(-1).float()
     targets = targets.view(-1).float()
 
+    print(targets.size())
+    print(predictions.size())
     intersection = torch.dot(predictions, targets).sum()
     union = predictions.sum() + targets.sum()
 
