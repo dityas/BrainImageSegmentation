@@ -19,8 +19,8 @@ data_files = list((data_dir/"HGG").iterdir()) + \
              list((data_dir/"LGG").iterdir())
 
 train_files = data_files[:250]
-val_files = data_files[251: 253]
-test_files = data_files[254:]
+val_files = data_files[251: 260]
+test_files = data_files[260:]
 
 train_dataset = Dataset2d(filenames=train_files, name="TrainSet")
 val_dataset = Dataset2d(filenames=val_files, name="ValidationSet")
