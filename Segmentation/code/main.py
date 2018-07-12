@@ -82,6 +82,7 @@ pipeline = SegmentationPipeline(training_set=train_dataset,
                                 model=UNet2d(),
                                 optimizer=O.Adagrad,
                                 device=device,
-                                metric=dice_score)
+                                metric=dice_score,
+                                early_stopping_patience=20)
 
 pipeline.train(epochs=1000, track_every=1000)
