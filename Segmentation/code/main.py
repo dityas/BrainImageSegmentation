@@ -65,7 +65,7 @@ def dice_loss(predictions, targets):
 
 # Define metric.
 def dice_score(predictions, targets):
-    predictions = predictions.view(-1).float()
+    predictions = predictions.select(1, 1).view(-1).float()
     targets = targets.view(-1).float()
 
     intersection = torch.dot(predictions, targets).sum()
