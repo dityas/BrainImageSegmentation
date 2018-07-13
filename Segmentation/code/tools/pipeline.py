@@ -159,7 +159,8 @@ class SegmentationPipeline:
 
             if stop_training:
                 print("Early stopping.")
-                torch.save(self.save_dir + "model.pt")
+                torch.save(self.model, self.save_dir + "model.pt")
+                print(f"Model saved to {self.save_dir}model.pt")
                 break
 
         # End training loop.
