@@ -20,11 +20,13 @@ class SegmentationPipeline:
                  transform_list=None,
                  early_stopping_patience=10,
                  metric=None,
-                 device="cpu:0"):
+                 device="cpu:0",
+                 save_dir="../models/"):
 
         self.training_set = training_set
         self.testing_set = testing_set
         self.validation_set = validation_set
+        self.save_dir = save_dir
         self.estopper = EarlyStopper(patience=early_stopping_patience)
         self.loss = loss
         self.device = device
@@ -157,6 +159,7 @@ class SegmentationPipeline:
 
             if stop_training:
                 print("Early stopping.")
+                torch.save(self.save_dir + "model.pt")
                 break
 
         # End training loop.
